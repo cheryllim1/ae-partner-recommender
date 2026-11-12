@@ -1,0 +1,122 @@
+[
+  {
+    "activityId": "ACT-501",
+    "timestamp": "2026-11-12T09:28:41.278317",
+    "type": "Partner Tier Upgraded",
+    "partnerName": "Partner Corp",
+    "description": "Partner Tier Upgraded completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-502",
+    "timestamp": "2026-11-10T17:28:41.280312",
+    "type": "Meeting Scheduled",
+    "partnerName": "Partner Corp",
+    "description": "Meeting Scheduled completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-503",
+    "timestamp": "2026-11-10T06:28:41.281310",
+    "type": "Meeting Scheduled",
+    "partnerName": "Partner Corp",
+    "description": "Meeting Scheduled completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-504",
+    "timestamp": "2026-11-11T09:28:41.282572",
+    "type": "Meeting Scheduled",
+    "partnerName": "Partner Corp",
+    "description": "Meeting Scheduled completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-505",
+    "timestamp": "2026-11-08T03:28:41.284590",
+    "type": "Co-Sell Registration",
+    "partnerName": "Partner Corp",
+    "description": "Co-Sell Registration completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-506",
+    "timestamp": "2026-11-09T02:28:41.286101",
+    "type": "Co-Sell Registration",
+    "partnerName": "Partner Corp",
+    "description": "Co-Sell Registration completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-507",
+    "timestamp": "2026-11-09T02:28:41.287325",
+    "type": "Meeting Scheduled",
+    "partnerName": "Partner Corp",
+    "description": "Meeting Scheduled completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-508",
+    "timestamp": "2026-11-08T17:28:41.288635",
+    "type": "Deal Stage Updated",
+    "partnerName": "Partner Corp",
+    "description": "Deal Stage Updated completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-509",
+    "timestamp": "2026-11-08T15:28:41.289634",
+    "type": "Deal Stage Updated",
+    "partnerName": "Partner Corp",
+    "description": "Deal Stage Updated completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-510",
+    "timestamp": "2026-11-12T03:28:41.290632",
+    "type": "Deal Stage Updated",
+    "partnerName": "Partner Corp",
+    "description": "Deal Stage Updated completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-511",
+    "timestamp": "2026-11-10T10:28:41.291628",
+    "type": "Email Template Sent",
+    "partnerName": "Partner Corp",
+    "description": "Email Template Sent completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-512",
+    "timestamp": "2026-11-10T07:28:41.292625",
+    "type": "Co-Sell Registration",
+    "partnerName": "Partner Corp",
+    "description": "Co-Sell Registration completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-513",
+    "timestamp": "2026-11-08T21:28:41.294867",
+    "type": "Deal Stage Updated",
+    "partnerName": "Partner Corp",
+    "description": "Deal Stage Updated completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-514",
+    "timestamp": "2026-11-10T01:28:41.297032",
+    "type": "Email Template Sent",
+    "partnerName": "Partner Corp",
+    "description": "Email Template Sent completed for partner ecosystem alignment.",
+    "status": "Success"
+  },
+  {
+    "activityId": "ACT-515",
+    "timestamp": "2026-11-10T01:28:41.298029",
+    "type": "Co-Sell Registration",
+    "partnerName": "Partner Corp",
+    "description": "Co-Sell Registration completed for partner ecosystem alignment.",
+    "status": "Success"
+  }
+]

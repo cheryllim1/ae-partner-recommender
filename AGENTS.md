@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Partner ranking/scoring lives in src/lib/partner-engine.ts (pure, tested); UI only consumes it so scoring rules stay in one place.
+- App is 100% client-side; data comes from bundled JSON in src/data/.
