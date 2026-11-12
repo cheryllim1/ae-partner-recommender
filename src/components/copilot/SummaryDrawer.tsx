@@ -9,7 +9,7 @@ export function SummaryDrawer({ dispatches, activities, friction, setFriction, d
   dispatches: number; activities: LiveActivity[]; friction: FrictionItem[]; setFriction: (f: FrictionItem[]) => void; dealOptions: string[];
 }) {
   const [open, setOpen] = useState(true);
-  const [deal, setDeal] = useState(dealOptions[0] ?? ""); const [cat, setCat] = useState(BLOCKER_CATEGORIES[0]); const [notes, setNotes] = useState("");
+  const [deal, setDeal] = useState(dealOptions[0] ?? ""); const [cat, setCat] = useState<string>(BLOCKER_CATEGORIES[0] ?? "Other"); const [notes, setNotes] = useState("");
   const [filter, setFilter] = useState<"All" | FrictionItem["status"]>("All");
   const openCount = friction.filter((f) => f.status !== "Resolved").length;
   const feed = [...activities, ...ACTIVITIES].sort((a, b) => b.timestamp.localeCompare(a.timestamp));

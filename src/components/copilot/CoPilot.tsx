@@ -7,7 +7,7 @@ const tierCls: Record<string, string> = {
   Platinum: "bg-navy text-navy-foreground", Gold: "bg-warning/20 text-foreground border border-warning/50",
   Silver: "bg-muted text-foreground border border-border", Authorized: "bg-accent text-accent-foreground",
 };
-export const TierBadge = ({ tier }: { tier: string }) => <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${tierCls[tier] ?? tierCls.Authorized}`}>{tier}</span>;
+export const TierBadge = ({ tier }: { tier: string }) => <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${tierCls[tier] ?? tierCls["Authorized"]}`}>{tier}</span>;
 export const TypeBadge = ({ type }: { type: string }) => <span className="rounded border border-sky/40 px-2 py-0.5 text-[11px] font-semibold text-sky">{type}</span>;
 
 function PartnerCard({ s, rank, opp, onEmail, onSlack }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void }) {

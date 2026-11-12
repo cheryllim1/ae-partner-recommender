@@ -22,14 +22,14 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [presetId, setPresetId] = useState(PRESETS[0].id);
+  const [presetId, setPresetId] = useState(PRESETS[0]!.id);
   const [edits, setEdits] = useState<Record<string, Opportunity>>({});
   const [statuses, setStatuses] = useState<Record<string, EngagementStatus>>(() => Object.fromEntries(PRESETS.map((p) => [p.id, p.status])));
   const [activities, setActivities] = useState<LiveActivity[]>([]);
   const [friction, setFriction] = useState(SEED_FRICTION);
   const preset = PRESETS.find((p) => p.id === presetId)!;
   const opp = edits[presetId] ?? preset;
-  const status = statuses[presetId];
+  const status = statuses[presetId] ?? preset.status;
   const dispatches = useMemo(() => Object.values(statuses).filter((s) => s.includes("Slack")).length, [statuses]);
 
   const log = (s: Scored, type: string, description: string, next: EngagementStatus) => {

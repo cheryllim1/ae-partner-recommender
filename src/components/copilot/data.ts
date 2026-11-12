@@ -7,8 +7,8 @@ export type Preset = Opportunity & { id: string; status: EngagementStatus; frict
 
 const matchProduct = (n: string) =>
   PRODUCTS.find((p) => p.name === n)?.name ??
-  PRODUCTS.find((p) => p.name.startsWith(n) || n.startsWith(p.name.split(" (")[0]))?.name ??
-  PRODUCTS[0].name;
+  PRODUCTS.find((p) => p.name.startsWith(n) || n.startsWith(p.name.split(" (")[0] ?? p.name))?.name ??
+  PRODUCTS[0]!.name;
 
 const normStatus = (s: string): EngagementStatus =>
   s.startsWith("Partner Engaged: Email") ? "Partner Engaged: Email Sent" : (s as EngagementStatus);
@@ -33,6 +33,6 @@ export const SEED_FRICTION: FrictionItem[] = dealsRaw
   .filter((d) => d.hasFrictionEscalation && d.frictionReason)
   .map((d, i) => ({
     id: `FR-${100 + i}`, deal: `${d.dealId} | ${d.endCustomer}`,
-    category: BLOCKER_CATEGORIES.find((c) => d.frictionReason!.startsWith(c.split(" ")[0])) ?? "Other",
-    notes: d.frictionReason!, status: (["New", "In Progress", "Resolved"] as const)[i % 3], date: d.createdDate,
+    category: BLOCKER_CATEGORIES.find((c) => d.frictionReason!.startsWith(c.split(" ")[0] ?? c)) ?? "Other",
+    notes: d.frictionReason!, status: (["New", "In Progress", "Resolved"] as const)[i % 3]!, date: d.createdDate,
   }));

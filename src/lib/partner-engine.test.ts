@@ -15,7 +15,7 @@ describe("partner engine", () => {
     expect(r.some((s) => s.matchKind !== "exact")).toBe(true);
   });
   it("Germany proposal deal ranks a German partner of the stage's type first", () => {
-    const [top] = rankPartners({ account: "N", country: "Germany", product: "OpenText Extended ECM (xECM)", amount: 480000, stage: "Proposal & Negotiation" });
+    const top = ( rankPartners({ account: "N", country: "Germany", product: "OpenText Extended ECM (xECM)", amount: 480000, stage: "Proposal & Negotiation" }))[0]!;
     expect(top.partner.country).toBe("Germany");
     expect(["System Integrator", "Service Providers"]).toContain(top.partner.type);
   });
