@@ -2,6 +2,8 @@ import { useState } from "react";
 import { BellRing, Trophy, XCircle, Check } from "lucide-react";
 import { isFollowUpDue, FOLLOW_UP_DAYS } from "@/lib/partner-engine";
 import type { OutreachRow } from "@/lib/team.functions";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const ago = (iso: string) => { const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000); return d <= 0 ? "today" : d === 1 ? "1 day ago" : `${d} days ago`; };
 
@@ -24,10 +26,22 @@ export function FollowUps({ items, onReplied }: { items: OutreachRow[]; onReplie
 
 export function DealOutcome({ outcome, note, partnerName, onSave }: { outcome: "Won" | "Lost" | null; note: string | null; partnerName?: string | undefined; onSave: (o: "Won" | "Lost" | null, note: string) => void }) {
   const [n, setN] = useState(note ?? "");
+  const [reminderOpen, setReminderOpen] = useState(false);
   return (
     <section aria-label="Deal outcome" className="rounded-lg border border-border bg-card p-4 shadow-[var(--shadow-card)]">
       <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"><Trophy className="h-4 w-4 text-success" />Deal Outcome</p>
-      {!partnerName ? <p className="text-sm text-muted-foreground">Assign a partner first to log a win or loss.</p> : <>
+      {!partnerName ? <>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" className="border-success hover:bg-success/10" onClick={() => setReminderOpen(true)}><Trophy className="text-success" />Won</Button>
+          <Button variant="outline" className="border-destructive hover:bg-destructive/10" onClick={() => setReminderOpen(true)}><XCircle className="text-destructive" />Lost</Button>
+        </div>
+        <Dialog open={reminderOpen} onOpenChange={setReminderOpen}>
+          <DialogContent className="w-[calc(100%-2rem)] rounded-lg">
+            <DialogTitle className="pr-6">Assign a partner first</DialogTitle>
+            <DialogDescription>Assign a partner first to log a win or loss.</DialogDescription>
+          </DialogContent>
+        </Dialog>
+      </> : <>
         <p className="text-xs text-muted-foreground">Logging the result with <strong>{partnerName}</strong> improves future partner rankings.</p>
         <input aria-label="Outcome note" placeholder="Optional note (e.g. why it was won or lost)" value={n} onChange={(e) => setN(e.target.value)} className="mt-2 h-9 w-full rounded border border-input bg-card px-2 text-sm" />
         <div className="mt-2 flex flex-wrap gap-2">
