@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
 import { PRESETS } from "@/components/copilot/data";
 import { addFriction, loadWorkspace, logActivity, logOutreach, markReplied, saveDeal, setFrictionStatus, type DealState, type Workspace } from "@/lib/team.functions";
 
