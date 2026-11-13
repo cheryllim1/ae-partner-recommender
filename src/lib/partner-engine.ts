@@ -111,3 +111,32 @@ ${ae}`;
 
 export const avgWinRate = () => PARTNERS.reduce((a, p) => a + p.winRate, 0) / PARTNERS.length;
 export const fmtMoney = (n: number) => (n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : `$${Math.round(n / 1000)}K`);
+
+// ---- Win/loss learning & follow-ups ----
+export type Outcome = { partnerId: string; outcome: "Won" | "Lost" };
+
+/** Ranking nudge from logged deal outcomes: +3 per win, -3 per loss, capped at ±9. */
+export function outcomeBoosts(outcomes: Outcome[]): Record<string, number> {
+  const acc: Record<string, number> = {};
+  for (const o of outcomes) acc[o.partnerId] = (acc[o.partnerId] ?? 0) + (o.outcome === "Won" ? 3 : -3);
+  for (const k of Object.keys(acc)) acc[k] = Math.max(-9, Math.min(9, acc[k]!));
+  return acc;
+}
+
+export function rankWithHistory(opp: Opportunity, boosts: Record<string, number>, n = 3): Scored[] {
+  return PARTNERS.map((p) => {
+    const s = scorePartner(p, opp);
+    const b = boosts[p.id] ?? 0;
+    if (!b) return s;
+    return { ...s, score: Math.max(0, Math.min(99, s.score + b)), why: `${s.why} • ${b > 0 ? "+" : ""}${b} from logged deal outcomes` };
+  })
+    .sort((a, b) => b.score - a.score || b.partner.winRate - a.partner.winRate)
+    .slice(0, n);
+}
+
+export const FOLLOW_UP_DAYS = 3;
+/** A partner outreach needs a follow-up once 3 full days pass with no reply. */
+export function isFollowUpDue(sentAt: string, replied: boolean, now: Date = new Date()): boolean {
+  if (replied) return false;
+  return now.getTime() - new Date(sentAt).getTime() >= FOLLOW_UP_DAYS * 86400000;
+}
