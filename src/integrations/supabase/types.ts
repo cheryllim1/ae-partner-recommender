@@ -14,7 +14,123 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          created_at: string
+          deal_id: string
+          description: string
+          id: string
+          partner_name: string
+          type: string
+          user_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          description: string
+          id?: string
+          partner_name: string
+          type: string
+          user_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          description?: string
+          id?: string
+          partner_name?: string
+          type?: string
+          user_name?: string | null
+        }
+        Relationships: []
+      }
+      deal_state: {
+        Row: {
+          assigned_partner_id: string | null
+          deal_id: string
+          outcome: string | null
+          outcome_note: string | null
+          status: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          assigned_partner_id?: string | null
+          deal_id: string
+          outcome?: string | null
+          outcome_note?: string | null
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          assigned_partner_id?: string | null
+          deal_id?: string
+          outcome?: string | null
+          outcome_note?: string | null
+          status?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      friction_items: {
+        Row: {
+          category: string
+          created_at: string
+          deal: string
+          id: string
+          notes: string
+          status: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          deal: string
+          id?: string
+          notes?: string
+          status?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          deal?: string
+          id?: string
+          notes?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      outreach: {
+        Row: {
+          channel: string
+          deal_id: string
+          id: string
+          partner_id: string
+          partner_name: string
+          replied: boolean
+          sent_at: string
+        }
+        Insert: {
+          channel: string
+          deal_id: string
+          id?: string
+          partner_id: string
+          partner_name: string
+          replied?: boolean
+          sent_at?: string
+        }
+        Update: {
+          channel?: string
+          deal_id?: string
+          id?: string
+          partner_id?: string
+          partner_name?: string
+          replied?: boolean
+          sent_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
