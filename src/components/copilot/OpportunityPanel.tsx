@@ -78,9 +78,17 @@ export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, s
       <section aria-label="Primary Co-Sell Partner" className="rounded border border-sf-border bg-card p-4 shadow-sm text-sf-text">
         <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-sf-label"><UserCheck className="h-4 w-4 text-sf-blue" />Primary Co-Sell Partner</p>
         {partner ? (<>
-          <div className="flex flex-wrap items-center gap-2"><h3 className="text-base font-bold">{partner.name}</h3><TierBadge tier={partner.tier} /><TypeBadge type={partner.type} /></div>
-          <p className="mt-1 text-xs text-muted-foreground">{partner.partnerContact.name} · {partner.partnerContact.email}</p>
-          <p className="mt-1 text-xs"><strong>{partner.winRate}%</strong> win rate · <strong>{partner.closedWon}</strong> deals won</p>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-sf-border pt-3 md:grid-cols-3">
+            <div className="col-span-2 md:col-span-1"><p className={label}>Partner Name</p><p className="text-sm font-semibold">{partner.name}</p></div>
+            <div><p className={label}>Partner Region</p><p className="text-sm">{partner.region?.trim() || partner.country}</p></div>
+            <div><p className={label}>Membership Tier</p><p className="mt-0.5"><TierBadge tier={partner.tier} /></p></div>
+            <div><p className={label}>Partner Program</p><p className="mt-0.5"><TypeBadge type={partner.type} /></p></div>
+            <div><p className={label}>Partner Manager Contact</p><p className="text-sm font-semibold">{partner.partnerContact.name}</p>
+              {partner.partnerContact.role && <p className="text-xs text-sf-label">{partner.partnerContact.role}</p>}</div>
+            <div className="col-span-2 md:col-span-1"><p className={label}>Partner Manager Email</p>
+              <a href={`mailto:${partner.partnerContact.email}`} className="break-all text-sm font-semibold text-sf-blue hover:underline">{partner.partnerContact.email}</a></div>
+          </div>
+          <p className="mt-3 text-xs text-sf-label"><strong className="text-sf-text">{partner.winRate}%</strong> win rate · <strong className="text-sf-text">{partner.closedWon}</strong> deals won · <strong className="text-sf-text">{partner.certifications}</strong> certifications</p>
           <div className="mt-3 flex gap-2">
             <button onClick={onChangePartner} className="flex h-9 items-center gap-1.5 rounded border border-sf-border px-3 text-sm font-semibold text-sf-blue hover:bg-sf-gray"><RefreshCw className="h-3.5 w-3.5" />Change Partner</button>
             <button onClick={onClearPartner} className="flex h-9 items-center gap-1.5 rounded border border-sf-border px-3 text-sm font-semibold text-sf-blue hover:bg-sf-gray"><X className="h-3.5 w-3.5" />Clear</button>
