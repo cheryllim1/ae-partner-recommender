@@ -4,8 +4,8 @@ import { TierBadge, TypeBadge } from "./CoPilot";
 import { COUNTRIES, PRODUCTS, STAGES, STAGE_LOGIC, segmentFor, type Opportunity, type Stage } from "@/lib/partner-engine";
 import type { EngagementStatus, Preset } from "./data";
 
-const field = "w-full h-9 rounded border border-input bg-card px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring";
-const label = "block text-xs font-medium text-muted-foreground mb-1";
+const field = "w-full h-8 rounded border border-sf-border bg-card px-3 text-sm text-sf-text focus:outline-none focus:border-sf-blue focus:ring-1 focus:ring-sf-blue";
+const label = "block text-xs text-sf-label mb-1";
 
 export function StatusBadge({ status }: { status: EngagementStatus }) {
   const cls = status === "Not Contacted" ? "bg-muted text-muted-foreground"
@@ -26,7 +26,7 @@ export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, s
   const cats = Array.from(new Set(PRODUCTS.map((p) => p.category)));
   return (
     <div className="space-y-4">
-      <div className="rounded-lg bg-card p-3 shadow-[var(--shadow-card)] border border-border">
+      <div className="rounded bg-card p-3 border border-sf-border shadow-sm text-sf-text">
         <label className={label} htmlFor="preset">Active Opportunity</label>
         <select id="preset" className={field} value={presetId} onChange={(e) => onPreset(e.target.value)}>
           <optgroup label="Featured EMEA Deals">
@@ -38,14 +38,14 @@ export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, s
         </select>
       </div>
 
-      <div className="rounded-lg bg-card shadow-[var(--shadow-card)] border border-border">
-        <div className="flex items-center gap-3 border-b border-border p-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded bg-sky text-navy-foreground"><Building2 className="h-5 w-5" /></div>
+      <div className="rounded bg-card border border-sf-border shadow-sm text-sf-text">
+        <div className="flex items-center gap-3 border-b border-sf-border bg-sf-gray/60 p-4">
+          <div className="flex h-10 w-10 items-center justify-center rounded bg-sf-orange text-primary-foreground"><Building2 className="h-5 w-5" /></div>
           <div className="min-w-0 flex-1">
-            <p className="text-xs text-muted-foreground">Opportunity · {presetId}</p>
+            <p className="text-xs text-sf-label">Opportunity · {presetId}</p>
             <h2 className="truncate text-lg font-bold">{opp.account || "Untitled"}</h2>
           </div>
-          <span className="rounded bg-accent px-2 py-1 text-xs font-semibold text-accent-foreground">{seg}</span>
+          <span className="rounded border border-sf-border bg-card px-2 py-1 text-xs font-semibold text-sf-label">{seg}</span>
         </div>
         <div className="grid grid-cols-2 gap-4 p-4">
           <div className="col-span-2"><label className={label} htmlFor="acct">Account Name</label>
@@ -62,26 +62,28 @@ export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, s
           <div className="col-span-2"><label className={label} htmlFor="stage">Deal Stage</label>
             <select id="stage" className={field} value={opp.stage} onChange={(e) => onChange({ ...opp, stage: e.target.value as Stage })}>
               {STAGES.map((s) => <option key={s}>{s}</option>)}</select></div>
-          <div className="col-span-2 flex items-center justify-between gap-2 rounded bg-muted/60 px-3 py-2">
-            <span className="text-xs font-medium text-muted-foreground">Engagement Status</span><StatusBadge status={status} /></div>
+          <div className="col-span-2 flex items-center justify-between gap-2 rounded bg-sf-gray px-3 py-2">
+            <span className="text-xs text-sf-label">Engagement Status</span><StatusBadge status={status} /></div>
         </div>
-        <div className="flex border-t border-border">
-          {STAGES.map((s, i) => {
+        <div className="flex gap-1 border-t border-sf-border p-3">
+          {STAGES.map((st, i) => {
             const idx = STAGES.indexOf(opp.stage);
-            return <div key={s} className={`flex-1 py-1.5 text-center text-[10px] font-semibold ${i <= idx ? "bg-primary text-primary-foreground" : "text-muted-foreground"} ${i === 0 ? "rounded-bl-lg" : ""} ${i === 3 ? "rounded-br-lg" : ""}`}>{s.split(" ")[0]}</div>;
+            const cls = i < idx ? "bg-sf-green text-primary-foreground" : i === idx ? "bg-sf-blue-dark text-primary-foreground" : "bg-sf-gray text-sf-label";
+            return <div key={st} style={{ clipPath: i === 0 ? "polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%)" : "polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%)" }}
+              className={`flex flex-1 items-center justify-center gap-1 py-1.5 text-[11px] font-semibold ${cls} ${i === 0 ? "rounded-l-full" : ""}`}>{i < idx ? "✓" : st.split(" ")[0]}</div>;
           })}
         </div>
       </div>
 
-      <section aria-label="Primary Co-Sell Partner" className="rounded-lg border border-border bg-card p-4 shadow-[var(--shadow-card)]">
-        <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"><UserCheck className="h-4 w-4 text-success" />Primary Co-Sell Partner</p>
+      <section aria-label="Primary Co-Sell Partner" className="rounded border border-sf-border bg-card p-4 shadow-sm text-sf-text">
+        <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-sf-label"><UserCheck className="h-4 w-4 text-sf-blue" />Primary Co-Sell Partner</p>
         {partner ? (<>
           <div className="flex flex-wrap items-center gap-2"><h3 className="text-base font-bold">{partner.name}</h3><TierBadge tier={partner.tier} /><TypeBadge type={partner.type} /></div>
           <p className="mt-1 text-xs text-muted-foreground">{partner.partnerContact.name} · {partner.partnerContact.email}</p>
           <p className="mt-1 text-xs"><strong>{partner.winRate}%</strong> win rate · <strong>{partner.closedWon}</strong> deals won</p>
           <div className="mt-3 flex gap-2">
-            <button onClick={onChangePartner} className="flex h-9 items-center gap-1.5 rounded border border-primary px-3 text-sm font-semibold text-primary hover:bg-accent"><RefreshCw className="h-3.5 w-3.5" />Change Partner</button>
-            <button onClick={onClearPartner} className="flex h-9 items-center gap-1.5 rounded border border-border px-3 text-sm font-semibold hover:bg-muted"><X className="h-3.5 w-3.5" />Clear</button>
+            <button onClick={onChangePartner} className="flex h-9 items-center gap-1.5 rounded border border-sf-border px-3 text-sm font-semibold text-sf-blue hover:bg-sf-gray"><RefreshCw className="h-3.5 w-3.5" />Change Partner</button>
+            <button onClick={onClearPartner} className="flex h-9 items-center gap-1.5 rounded border border-sf-border px-3 text-sm font-semibold text-sf-blue hover:bg-sf-gray"><X className="h-3.5 w-3.5" />Clear</button>
           </div>
         </>) : <p className="text-sm text-muted-foreground">No partner assigned yet — use "Select & Confirm Partner" on a recommendation.</p>}
       </section>

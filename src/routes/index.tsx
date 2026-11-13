@@ -53,7 +53,7 @@ function Index() {
   const onSlack = (s: Scored) => {
     if (!status.startsWith("Partner Assigned")) setDeal({ status: "Partner Engaged: Dispatched to Slack (Pending Reply)" });
     ws.logOutreach({ deal_id: presetId, partner_id: s.partner.id, partner_name: s.partner.name, channel: "Slack" });
-    act("Co-Sell Registration", s.partner.name, `Dispatched to #pde-deal-reg for ${opp.account}; partner manager notified.`);
+    act("Co-Sell Registration", s.partner.name, `Pinged ${s.partner.name} on Slack for ${opp.account}; partner manager notified.`);
   };
   const assign = (p: Partner) => {
     setDeal({ assigned_partner_id: p.id, status: `Partner Assigned: ${p.name}`, outcome: null, outcome_note: null });
