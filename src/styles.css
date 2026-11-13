@@ -69,6 +69,26 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
+  --color-sf-blue: var(--sf-blue);
+  --color-sf-blue-dark: var(--sf-blue-dark);
+  --color-sf-green: var(--sf-green);
+  --color-sf-orange: var(--sf-orange);
+  --color-sf-border: var(--sf-border);
+  --color-sf-gray: var(--sf-gray);
+  --color-sf-text: var(--sf-text);
+  --color-sf-label: var(--sf-label);
+  --color-tier-platinum: var(--tier-platinum);
+  --color-tier-platinum-foreground: var(--tier-platinum-foreground);
+  --color-tier-platinum-border: var(--tier-platinum-border);
+  --color-tier-gold: var(--tier-gold);
+  --color-tier-gold-foreground: var(--tier-gold-foreground);
+  --color-tier-gold-border: var(--tier-gold-border);
+  --color-tier-silver: var(--tier-silver);
+  --color-tier-silver-foreground: var(--tier-silver-foreground);
+  --color-tier-silver-border: var(--tier-silver-border);
+  --color-tier-bronze: var(--tier-bronze);
+  --color-tier-bronze-foreground: var(--tier-bronze-foreground);
+  --color-tier-bronze-border: var(--tier-bronze-border);
   --font-sans: "Inter", Arial, sans-serif;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -82,6 +102,28 @@
 
 :root {
   --radius: 0.5rem;
+  /* Salesforce Lightning (SLDS) emulator */
+  --sf-blue: oklch(0.556 0.159 251.5);
+  --sf-blue-dark: oklch(0.45 0.14 253);
+  --sf-green: oklch(0.52 0.12 157);
+  --sf-orange: oklch(0.74 0.17 58);
+  --sf-border: oklch(0.89 0.004 70);
+  --sf-gray: oklch(0.94 0.003 70);
+  --sf-text: oklch(0.24 0.004 70);
+  --sf-label: oklch(0.42 0.004 70);
+  /* Partner membership tiers */
+  --tier-platinum: oklch(0.36 0.02 255);
+  --tier-platinum-foreground: oklch(0.97 0.005 255);
+  --tier-platinum-border: oklch(0.7 0.02 255);
+  --tier-gold: oklch(0.96 0.06 95);
+  --tier-gold-foreground: oklch(0.47 0.12 60);
+  --tier-gold-border: oklch(0.86 0.15 90);
+  --tier-silver: oklch(0.97 0.005 250);
+  --tier-silver-foreground: oklch(0.44 0.03 257);
+  --tier-silver-border: oklch(0.87 0.02 255);
+  --tier-bronze: oklch(0.95 0.04 65);
+  --tier-bronze-foreground: oklch(0.38 0.09 50);
+  --tier-bronze-border: oklch(0.83 0.11 60);
   --navy: oklch(0.239 0.058 256.7);
   --navy-foreground: oklch(0.98 0.005 258);
   --primary-hover: oklch(0.446 0.148 255.2);

@@ -8,10 +8,12 @@ import { draftIntroEmail } from "@/lib/ai-email.functions";
 import { type Partner, PARTNERS, STAGE_LOGIC, buildIntroEmail, fmtMoney, rankWithHistory, scorePartner, type Opportunity, type Scored } from "@/lib/partner-engine";
 
 const tierCls: Record<string, string> = {
-  Platinum: "bg-navy text-navy-foreground", Gold: "bg-warning/20 text-foreground border border-warning/50",
-  Silver: "bg-muted text-foreground border border-border", Authorized: "bg-accent text-accent-foreground",
+  Platinum: "bg-tier-platinum text-tier-platinum-foreground border border-tier-platinum-border",
+  Gold: "bg-tier-gold text-tier-gold-foreground border border-tier-gold-border",
+  Silver: "bg-tier-silver text-tier-silver-foreground border border-tier-silver-border",
+  Bronze: "bg-tier-bronze text-tier-bronze-foreground border border-tier-bronze-border",
 };
-export const TierBadge = ({ tier }: { tier: string }) => <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${tierCls[tier] ?? tierCls["Authorized"]}`}>{tier}</span>;
+export const TierBadge = ({ tier }: { tier: string }) => <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${tierCls[tier] ?? tierCls["Bronze"]}`}>{tier}</span>;
 export const TypeBadge = ({ type }: { type: string }) => <span className="rounded border border-sky/40 px-2 py-0.5 text-[11px] font-semibold text-sky">{type}</span>;
 
 function ConfirmAssign({ p, opp, onConfirm, onCancel }: { p: Partner; opp: Opportunity; onConfirm: () => void; onCancel: () => void }) {
@@ -67,7 +69,7 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confi
   const p = s.partner;
   const ping = () => {
     setSending(true);
-    setTimeout(() => { setSending(false); onSlack(); toast.success("Dispatched to #pde-deal-reg & Partner Manager notified"); }, 400);
+    setTimeout(() => { setSending(false); onSlack(); toast.success("Pinged partner on Slack & Partner Manager notified"); }, 400);
   };
   return (
     <article className={`rounded-lg border bg-card p-4 shadow-[var(--shadow-card)] ${assigned ? "border-success ring-2 ring-success/40" : rank === 1 ? "border-primary ring-1 ring-primary/30" : "border-border"}`}>
@@ -94,7 +96,7 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confi
         <button onClick={() => setComposing(!composing)} className="flex h-11 items-center justify-center gap-2 rounded border border-primary text-sm font-semibold text-primary hover:bg-accent">
           <PenLine className="h-4 w-4" />{composing ? "Hide Email" : "Write Intro Email"}</button>
         <button onClick={ping} disabled={sending} className="flex h-11 items-center justify-center gap-2 rounded bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary-hover disabled:opacity-80">
-          {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}{sending ? "Dispatching…" : "Ping PDE on Slack"}</button>
+          {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}{sending ? "Dispatching…" : "Ping Partner on Slack"}</button>
         <button onClick={onSelect} disabled={assigned} className="flex h-11 items-center justify-center gap-2 rounded border border-success bg-success/10 text-sm font-semibold text-foreground hover:bg-success/20 disabled:opacity-70 sm:col-span-2">
           <UserCheck className="h-4 w-4 text-success" />{assigned ? "Assigned to this deal" : "Select & Confirm Partner"}</button>
       </div>
@@ -119,7 +121,7 @@ function Directory({ opp, assignedId, onSelect, renderConfirm }: { opp: Opportun
         <div className="relative col-span-2 md:col-span-1"><Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <input placeholder="Search name…" value={q} onChange={upd(setQ)} className={`${sel} w-full pl-8`} /></div>
         <select aria-label="Country" className={sel} value={country} onChange={upd(setCountry)}><option value="">All countries</option>{countries.map((c) => <option key={c}>{c}</option>)}</select>
-        <select aria-label="Tier" className={sel} value={tier} onChange={upd(setTier)}><option value="">All tiers</option>{["Platinum", "Gold", "Silver", "Authorized"].map((c) => <option key={c}>{c}</option>)}</select>
+        <select aria-label="Tier" className={sel} value={tier} onChange={upd(setTier)}><option value="">All tiers</option>{["Platinum", "Gold", "Silver", "Bronze"].map((c) => <option key={c}>{c}</option>)}</select>
         <select aria-label="Program" className={sel} value={type} onChange={upd(setType)}><option value="">All programs</option>{types.map((c) => <option key={c}>{c}</option>)}</select>
       </div>
       <div className="overflow-x-auto">
