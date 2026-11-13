@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
+import type React from "react";
 import { Check, CheckCircle2, UserCheck, Copy, Loader2, Mail, MapPin, Search, Zap, Award, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { type Partner, PARTNERS, buildIntroEmail, fmtMoney, rankPartners, scorePartner, type Opportunity, type Scored } from "@/lib/partner-engine";
@@ -10,7 +11,19 @@ const tierCls: Record<string, string> = {
 export const TierBadge = ({ tier }: { tier: string }) => <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${tierCls[tier] ?? tierCls["Authorized"]}`}>{tier}</span>;
 export const TypeBadge = ({ type }: { type: string }) => <span className="rounded border border-sky/40 px-2 py-0.5 text-[11px] font-semibold text-sky">{type}</span>;
 
-function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void; assigned: boolean; onSelect: () => void }) {
+function ConfirmAssign({ p, opp, onConfirm, onCancel }: { p: Partner; opp: Opportunity; onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <div role="dialog" aria-label="Confirm partner" className="mt-3 rounded-lg border border-success bg-success/5 p-3 text-left">
+      <p className="text-sm">Assign <strong>{p.name}</strong> as primary co-sell partner for <strong>{opp.account}</strong> ({fmtMoney(opp.amount)})?</p>
+      <div className="mt-2 flex gap-2">
+        <button onClick={onConfirm} className="h-9 rounded bg-success px-3 text-sm font-semibold text-success-foreground">Confirm</button>
+        <button onClick={onCancel} className="h-9 rounded border border-border bg-card px-3 text-sm font-semibold">Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confirm }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void; assigned: boolean; onSelect: () => void; confirm?: React.ReactNode }) {
   const [copied, setCopied] = useState(false);
   const [sending, setSending] = useState(false);
   const p = s.partner;
@@ -53,11 +66,12 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect }: { s
         <button onClick={onSelect} disabled={assigned} className="flex h-11 items-center justify-center gap-2 rounded border border-success bg-success/10 text-sm font-semibold text-foreground hover:bg-success/20 disabled:opacity-70 sm:col-span-2">
           <UserCheck className="h-4 w-4 text-success" />{assigned ? "Assigned to this deal" : "Select & Confirm Partner"}</button>
       </div>
+      {confirm}
     </article>
   );
 }
 
-function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId?: string | undefined; onSelect: (p: Partner) => void }) {
+function Directory({ opp, assignedId, onSelect, renderConfirm }: { opp: Opportunity; assignedId?: string | undefined; onSelect: (p: Partner) => void; renderConfirm: (p: Partner) => React.ReactNode }) {
   const [q, setQ] = useState(""); const [country, setCountry] = useState(""); const [tier, setTier] = useState(""); const [type, setType] = useState(""); const [page, setPage] = useState(0);
   const countries = useMemo(() => Array.from(new Set(PARTNERS.map((p) => p.country))).sort(), []);
   const types = useMemo(() => Array.from(new Set(PARTNERS.map((p) => p.type))).sort(), []);
@@ -79,8 +93,8 @@ function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId
         <table className="w-full text-sm">
           <thead className="bg-muted/60 text-left text-xs uppercase text-muted-foreground"><tr>
             <th className="px-3 py-2">Partner</th><th className="px-3 py-2">Country</th><th className="px-3 py-2">Tier / Program</th><th className="px-3 py-2 text-right">Win Rate</th><th className="px-3 py-2 text-right">Fit</th><th className="px-3 py-2" /></tr></thead>
-          <tbody>{rows.slice(cur * 20, cur * 20 + 20).map((p) => (
-            <tr key={p.id} className="border-t border-border hover:bg-accent/50">
+          <tbody>{rows.slice(cur * 20, cur * 20 + 20).map((p) => { const c = renderConfirm(p); return (
+            <Fragment key={p.id}><tr className="border-t border-border hover:bg-accent/50">
               <td className="px-3 py-2"><p className="font-semibold">{p.name}</p><p className="text-xs text-muted-foreground">{p.partnerContact.name} · {p.certifications} certs</p></td>
               <td className="px-3 py-2 text-xs">{p.country}</td>
               <td className="px-3 py-2"><div className="flex flex-wrap gap-1"><TierBadge tier={p.tier} /><TypeBadge type={p.type} /></div></td>
@@ -89,7 +103,7 @@ function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId
               <td className="px-3 py-2 text-right">{assignedId === p.id
                 ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-success"><CheckCircle2 className="h-3.5 w-3.5" />Assigned</span>
                 : <button onClick={() => onSelect(p)} className="whitespace-nowrap rounded border border-success px-2 py-1 text-xs font-semibold hover:bg-success/10">Assign to Deal</button>}</td>
-            </tr>))}
+            </tr>{c && <tr><td colSpan={6} className="px-3 pb-3">{c}</td></tr>}</Fragment>); })}
             {rows.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">No partners match these filters.</td></tr>}
           </tbody>
         </table>
@@ -109,6 +123,7 @@ export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign }: { opp: 
   const [view, setView] = useState<"top" | "all">("top");
   const [pending, setPending] = useState<Partner | null>(null);
   const top = useMemo(() => rankPartners(opp), [opp]);
+  const renderConfirm = (p: Partner) => pending?.id === p.id ? <ConfirmAssign p={p} opp={opp} onConfirm={() => { onAssign(p); setPending(null); }} onCancel={() => setPending(null)} /> : null;
   return (
     <div className="rounded-xl border border-border bg-muted/40 p-4">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -119,17 +134,9 @@ export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign }: { opp: 
         <button onClick={() => setView(view === "top" ? "all" : "top")} className="h-9 rounded border border-border bg-card px-3 text-sm font-semibold text-primary hover:bg-accent">
           {view === "top" ? `Browse All ${PARTNERS.length} Partners` : "Back to Top 3"}</button>
       </div>
-      {pending && (
-        <div role="dialog" aria-label="Confirm partner" className="mb-3 rounded-lg border border-success bg-card p-3 shadow-[var(--shadow-card)]">
-          <p className="text-sm">Assign <strong>{pending.name}</strong> as primary co-sell partner for <strong>{opp.account}</strong> ({fmtMoney(opp.amount)})?</p>
-          <div className="mt-2 flex gap-2">
-            <button onClick={() => { onAssign(pending); setPending(null); }} className="h-9 rounded bg-success px-3 text-sm font-semibold text-success-foreground">Confirm</button>
-            <button onClick={() => setPending(null)} className="h-9 rounded border border-border px-3 text-sm font-semibold">Cancel</button>
-          </div>
-        </div>)}
       {view === "top" ? (
-        <div className="space-y-3">{top.map((s, i) => <PartnerCard key={s.partner.id} s={s} rank={i + 1} opp={opp} onEmail={() => onEmail(s)} onSlack={() => onSlack(s)} assigned={assignedId === s.partner.id} onSelect={() => setPending(s.partner)} />)}</div>
-      ) : <Directory opp={opp} assignedId={assignedId} onSelect={setPending} />}
+        <div className="space-y-3">{top.map((s, i) => <PartnerCard key={s.partner.id} s={s} rank={i + 1} opp={opp} onEmail={() => onEmail(s)} onSlack={() => onSlack(s)} assigned={assignedId === s.partner.id} onSelect={() => setPending(s.partner)} confirm={renderConfirm(s.partner)} />)}</div>
+      ) : <Directory opp={opp} assignedId={assignedId} onSelect={setPending} renderConfirm={renderConfirm} />}
     </div>
   );
 }
