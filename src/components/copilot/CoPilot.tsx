@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { Check, Copy, Loader2, Mail, MapPin, Search, Zap, Award, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, CheckCircle2, UserCheck, Copy, Loader2, Mail, MapPin, Search, Zap, Award, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { PARTNERS, buildIntroEmail, fmtMoney, rankPartners, scorePartner, type Opportunity, type Scored } from "@/lib/partner-engine";
+import { type Partner, PARTNERS, buildIntroEmail, fmtMoney, rankPartners, scorePartner, type Opportunity, type Scored } from "@/lib/partner-engine";
 
 const tierCls: Record<string, string> = {
   Platinum: "bg-navy text-navy-foreground", Gold: "bg-warning/20 text-foreground border border-warning/50",
@@ -10,7 +10,7 @@ const tierCls: Record<string, string> = {
 export const TierBadge = ({ tier }: { tier: string }) => <span className={`rounded px-2 py-0.5 text-[11px] font-semibold ${tierCls[tier] ?? tierCls["Authorized"]}`}>{tier}</span>;
 export const TypeBadge = ({ type }: { type: string }) => <span className="rounded border border-sky/40 px-2 py-0.5 text-[11px] font-semibold text-sky">{type}</span>;
 
-function PartnerCard({ s, rank, opp, onEmail, onSlack }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void }) {
+function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void; assigned: boolean; onSelect: () => void }) {
   const [copied, setCopied] = useState(false);
   const [sending, setSending] = useState(false);
   const p = s.partner;
@@ -25,9 +25,10 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack }: { s: Scored; rank: numb
     setTimeout(() => { setSending(false); onSlack(); toast.success("Dispatched to #pde-deal-reg & Partner Manager notified"); }, 400);
   };
   return (
-    <article className={`rounded-lg border bg-card p-4 shadow-[var(--shadow-card)] ${rank === 1 ? "border-primary ring-1 ring-primary/30" : "border-border"}`}>
+    <article className={`rounded-lg border bg-card p-4 shadow-[var(--shadow-card)] ${assigned ? "border-success ring-2 ring-success/40" : rank === 1 ? "border-primary ring-1 ring-primary/30" : "border-border"}`}>
       <div className="flex flex-wrap items-center gap-2">
         <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${rank === 1 ? "bg-primary text-primary-foreground" : "bg-navy text-navy-foreground"}`}>#{rank} {rank === 1 ? "Best Match" : "Match"} — {s.score}% Score</span>
+        {assigned && <span className="flex items-center gap-1 rounded-full bg-success px-2.5 py-0.5 text-xs font-bold text-success-foreground"><CheckCircle2 className="h-3.5 w-3.5" />Assigned Co-Sell Partner</span>}
         {s.matchKind !== "exact" && <span className="rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-semibold text-foreground border border-warning/40">Regional / EMEA Fallback Match</span>}
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -49,12 +50,14 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack }: { s: Scored; rank: numb
           {copied ? <><Check className="h-4 w-4" />Copied!</> : <><Copy className="h-4 w-4" />Copy Intro Email</>}</button>
         <button onClick={ping} disabled={sending} className="flex h-11 items-center justify-center gap-2 rounded bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary-hover disabled:opacity-80">
           {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}{sending ? "Dispatching…" : "Ping PDE on Slack"}</button>
+        <button onClick={onSelect} disabled={assigned} className="flex h-11 items-center justify-center gap-2 rounded border border-success bg-success/10 text-sm font-semibold text-foreground hover:bg-success/20 disabled:opacity-70 sm:col-span-2">
+          <UserCheck className="h-4 w-4 text-success" />{assigned ? "Assigned to this deal" : "Select & Confirm Partner"}</button>
       </div>
     </article>
   );
 }
 
-function Directory({ opp }: { opp: Opportunity }) {
+function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId?: string | undefined; onSelect: (p: Partner) => void }) {
   const [q, setQ] = useState(""); const [country, setCountry] = useState(""); const [tier, setTier] = useState(""); const [type, setType] = useState(""); const [page, setPage] = useState(0);
   const countries = useMemo(() => Array.from(new Set(PARTNERS.map((p) => p.country))).sort(), []);
   const types = useMemo(() => Array.from(new Set(PARTNERS.map((p) => p.type))).sort(), []);
@@ -75,7 +78,7 @@ function Directory({ opp }: { opp: Opportunity }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-muted/60 text-left text-xs uppercase text-muted-foreground"><tr>
-            <th className="px-3 py-2">Partner</th><th className="px-3 py-2">Country</th><th className="px-3 py-2">Tier / Program</th><th className="px-3 py-2 text-right">Win Rate</th><th className="px-3 py-2 text-right">Fit</th></tr></thead>
+            <th className="px-3 py-2">Partner</th><th className="px-3 py-2">Country</th><th className="px-3 py-2">Tier / Program</th><th className="px-3 py-2 text-right">Win Rate</th><th className="px-3 py-2 text-right">Fit</th><th className="px-3 py-2" /></tr></thead>
           <tbody>{rows.slice(cur * 20, cur * 20 + 20).map((p) => (
             <tr key={p.id} className="border-t border-border hover:bg-accent/50">
               <td className="px-3 py-2"><p className="font-semibold">{p.name}</p><p className="text-xs text-muted-foreground">{p.partnerContact.name} · {p.certifications} certs</p></td>
@@ -83,8 +86,11 @@ function Directory({ opp }: { opp: Opportunity }) {
               <td className="px-3 py-2"><div className="flex flex-wrap gap-1"><TierBadge tier={p.tier} /><TypeBadge type={p.type} /></div></td>
               <td className="px-3 py-2 text-right font-semibold">{p.winRate}%</td>
               <td className="px-3 py-2 text-right text-xs font-semibold text-primary">{scorePartner(p, opp).score}%</td>
+              <td className="px-3 py-2 text-right">{assignedId === p.id
+                ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-success"><CheckCircle2 className="h-3.5 w-3.5" />Assigned</span>
+                : <button onClick={() => onSelect(p)} className="whitespace-nowrap rounded border border-success px-2 py-1 text-xs font-semibold hover:bg-success/10">Assign to Deal</button>}</td>
             </tr>))}
-            {rows.length === 0 && <tr><td colSpan={5} className="p-6 text-center text-muted-foreground">No partners match these filters.</td></tr>}
+            {rows.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">No partners match these filters.</td></tr>}
           </tbody>
         </table>
       </div>
@@ -99,8 +105,9 @@ function Directory({ opp }: { opp: Opportunity }) {
   );
 }
 
-export function CoPilot({ opp, onEmail, onSlack }: { opp: Opportunity; onEmail: (s: Scored) => void; onSlack: (s: Scored) => void }) {
+export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign }: { opp: Opportunity; onEmail: (s: Scored) => void; onSlack: (s: Scored) => void; assignedId?: string | undefined; onAssign: (p: Partner) => void }) {
   const [view, setView] = useState<"top" | "all">("top");
+  const [pending, setPending] = useState<Partner | null>(null);
   const top = useMemo(() => rankPartners(opp), [opp]);
   return (
     <div className="rounded-xl border border-border bg-muted/40 p-4">
@@ -112,9 +119,17 @@ export function CoPilot({ opp, onEmail, onSlack }: { opp: Opportunity; onEmail: 
         <button onClick={() => setView(view === "top" ? "all" : "top")} className="h-9 rounded border border-border bg-card px-3 text-sm font-semibold text-primary hover:bg-accent">
           {view === "top" ? `Browse All ${PARTNERS.length} Partners` : "Back to Top 3"}</button>
       </div>
+      {pending && (
+        <div role="dialog" aria-label="Confirm partner" className="mb-3 rounded-lg border border-success bg-card p-3 shadow-[var(--shadow-card)]">
+          <p className="text-sm">Assign <strong>{pending.name}</strong> as primary co-sell partner for <strong>{opp.account}</strong> ({fmtMoney(opp.amount)})?</p>
+          <div className="mt-2 flex gap-2">
+            <button onClick={() => { onAssign(pending); setPending(null); }} className="h-9 rounded bg-success px-3 text-sm font-semibold text-success-foreground">Confirm</button>
+            <button onClick={() => setPending(null)} className="h-9 rounded border border-border px-3 text-sm font-semibold">Cancel</button>
+          </div>
+        </div>)}
       {view === "top" ? (
-        <div className="space-y-3">{top.map((s, i) => <PartnerCard key={s.partner.id} s={s} rank={i + 1} opp={opp} onEmail={() => onEmail(s)} onSlack={() => onSlack(s)} />)}</div>
-      ) : <Directory opp={opp} />}
+        <div className="space-y-3">{top.map((s, i) => <PartnerCard key={s.partner.id} s={s} rank={i + 1} opp={opp} onEmail={() => onEmail(s)} onSlack={() => onSlack(s)} assigned={assignedId === s.partner.id} onSelect={() => setPending(s.partner)} />)}</div>
+      ) : <Directory opp={opp} assignedId={assignedId} onSelect={setPending} />}
     </div>
   );
 }

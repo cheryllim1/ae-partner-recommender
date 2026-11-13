@@ -2,7 +2,7 @@ import dealsRaw from "@/data/mock_deals.json";
 import activitiesRaw from "@/data/mock_activities.json";
 import { PRODUCTS, mapStage, type Opportunity } from "@/lib/partner-engine";
 
-export type EngagementStatus = "Not Contacted" | "Partner Engaged: Email Sent" | "Partner Engaged: Dispatched to Slack (Pending Reply)" | "Partner Accepted: Co-Sell Active";
+export type EngagementStatus = "Not Contacted" | "Partner Engaged: Email Sent" | "Partner Engaged: Dispatched to Slack (Pending Reply)" | "Partner Accepted: Co-Sell Active" | `Partner Assigned: ${string}`;
 export type Preset = Opportunity & { id: string; status: EngagementStatus; friction?: string | null; fallback?: boolean };
 
 const matchProduct = (n: string) =>

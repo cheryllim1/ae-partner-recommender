@@ -1,4 +1,6 @@
-import { Building2, Info } from "lucide-react";
+import { Building2, Info, UserCheck, X, RefreshCw } from "lucide-react";
+import type { Partner } from "@/lib/partner-engine";
+import { TierBadge, TypeBadge } from "./CoPilot";
 import { COUNTRIES, PRODUCTS, STAGES, STAGE_LOGIC, segmentFor, type Opportunity, type Stage } from "@/lib/partner-engine";
 import type { EngagementStatus, Preset } from "./data";
 
@@ -14,9 +16,10 @@ export function StatusBadge({ status }: { status: EngagementStatus }) {
   </span>;
 }
 
-export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, status }: {
+export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, status, partner, onChangePartner, onClearPartner }: {
   presetId: string; presets: Preset[]; onPreset: (id: string) => void;
   opp: Opportunity; onChange: (o: Opportunity) => void; status: EngagementStatus;
+  partner?: Partner | undefined; onChangePartner: () => void; onClearPartner: () => void;
 }) {
   const logic = STAGE_LOGIC[opp.stage];
   const seg = segmentFor(opp.amount || 0);
@@ -69,6 +72,19 @@ export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, s
           })}
         </div>
       </div>
+
+      <section aria-label="Primary Co-Sell Partner" className="rounded-lg border border-border bg-card p-4 shadow-[var(--shadow-card)]">
+        <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground"><UserCheck className="h-4 w-4 text-success" />Primary Co-Sell Partner</p>
+        {partner ? (<>
+          <div className="flex flex-wrap items-center gap-2"><h3 className="text-base font-bold">{partner.name}</h3><TierBadge tier={partner.tier} /><TypeBadge type={partner.type} /></div>
+          <p className="mt-1 text-xs text-muted-foreground">{partner.partnerContact.name} · {partner.partnerContact.email}</p>
+          <p className="mt-1 text-xs"><strong>{partner.winRate}%</strong> win rate · <strong>{partner.closedWon}</strong> deals won</p>
+          <div className="mt-3 flex gap-2">
+            <button onClick={onChangePartner} className="flex h-9 items-center gap-1.5 rounded border border-primary px-3 text-sm font-semibold text-primary hover:bg-accent"><RefreshCw className="h-3.5 w-3.5" />Change Partner</button>
+            <button onClick={onClearPartner} className="flex h-9 items-center gap-1.5 rounded border border-border px-3 text-sm font-semibold hover:bg-muted"><X className="h-3.5 w-3.5" />Clear</button>
+          </div>
+        </>) : <p className="text-sm text-muted-foreground">No partner assigned yet — use "Select & Confirm Partner" on a recommendation.</p>}
+      </section>
 
       <div className="rounded-lg border border-sky/40 bg-accent p-4">
         <div className="flex gap-3">
