@@ -24,18 +24,14 @@ Getting direct sales teams to consistently attach partners is one of the highest
 
 ## ✨ Key Features & Salesforce-Native UI
 
-### 1. Salesforce-Emulated Opportunity Layout
-* **Native Aesthetic:** Styled pixel-for-pixel to mimic standard Salesforce opportunity records (`OPP-8841 | NordVatten Energy`), allowing AEs to work seamlessly within a familiar environment.
-* **Inline Deal Sync:** Dynamically reads deal parameters (Country, Deal Amount, Product Line, Stage) to calculate matching partner scores in real time.
-
-### 2. Intelligent Partner Recommendation Engine
+### 1. Intelligent Partner Recommendation Engine
 * Surfaces top-ranked partner matches categorized by official OpenText tier (**Platinum, Gold, Silver, Bronze**) and certification depth.
 * Generates pre-formatted, one-click outreach templates tailored to the specific deal stage and partner focus area.
 
-### 3. Live Engagement Status Badges
+### 2. Live Engagement Status Badges
 * Tracks communication states directly on the opportunity card (e.g., `Not Contacted`, `Partner Engaged: Dispatched to Slack (Pending Reply)`, `Partner Engaged: Email Sent`) to eliminate duplicate outreach and internal friction.
 
-### 4. Transparent Regional Fallback Logic
+### 3. Transparent Regional Fallback Logic
 * Automatically identifies when an opportunity sits in an underserved region with fewer than three local matches, instantly triggering a visible fallback alert: **`Contact Regional Partner Manager`**.
 
 ---
