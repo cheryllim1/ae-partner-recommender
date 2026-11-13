@@ -30,7 +30,7 @@ DATA SOURCES (USE THE ATTACHED CLEAN JSON FILES):
 WHAT TO BUILD
 Build a clean, 2-column embedded Salesforce Opportunity workspace (100% client-side):
 
-1. **Left Column: Simulated Salesforce Opportunity Record (45% Width)**
+1. **Top Row: Simulated Salesforce Opportunity Record (45% Width)**
    - **Preset Deal Switcher Bar at Top:** A dropdown to switch between European deals from `mock_deals.json` or the 4 presets (or edit fields live to test the recommendation engine):
      1. `OPP-8841 | NordVatten Energy (Germany) — $480,000 | Stage: Proposal & Negotiation`
      2. `OPP-8904 | Albion FinTech Ltd (United Kingdom) — $165,000 | Stage: Prospecting / Discovery`
@@ -49,7 +49,7 @@ Build a clean, 2-column embedded Salesforce Opportunity workspace (100% client-s
      * *Proposal & Negotiation* → Prioritizes **System Integrators (SI) & Service Providers** (**Co-Delivery & Implementation**).
      * *Closed-Won* → Prioritizes **System Integrators & Service Providers** (**Post-Sale Deployment & Managed Services**).
 
-2. **Right Column: "AE Partner Co-Pilot" Embedded Plugin Widget (55% Width)**
+2. **Mid Row: "AE Partner Co-Pilot" Embedded Plugin Widget (55% Width)**
    - **Header & View Toggle:** Title `"Top 3 Recommended Partners"` with a secondary toggle button `"Browse All 604 Partners"` (paginated at 20 per page with search and filtering by name, country, tier, and partner program type).
    - **Smart Client-Side Ranking Engine (Top 3 Cards):**
      * Automatically score and rank partners whenever the Opportunity fields change on the left:
