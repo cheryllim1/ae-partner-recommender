@@ -22,7 +22,7 @@ export const loadWorkspace = createServerFn({ method: "GET" }).handler(async ():
 });
 
 export const saveDeal = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({
+  .validator((v) => z.object({
     deal_id: z.string().min(1).max(50), status: z.string().max(200),
     assigned_partner_id: z.string().max(100).nullable(), outcome: z.enum(["Won", "Lost"]).nullable(), outcome_note: z.string().max(1000).nullable(),
   }).parse(v))
@@ -35,7 +35,7 @@ export const saveDeal = createServerFn({ method: "POST" })
   });
 
 export const logActivity = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({ deal_id: z.string().max(50), type: z.string().max(100), partner_name: z.string().max(200), description: z.string().max(1000) }).parse(v))
+  .validator((v) => z.object({ deal_id: z.string().max(50), type: z.string().max(100), partner_name: z.string().max(200), description: z.string().max(1000) }).parse(v))
   .handler(async ({ data }) => {
     const { teamDb } = await import("./team.server");
     const { db, user } = await teamDb();
@@ -45,7 +45,7 @@ export const logActivity = createServerFn({ method: "POST" })
   });
 
 export const logOutreach = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({ deal_id: z.string().max(50), partner_id: z.string().max(100), partner_name: z.string().max(200), channel: z.enum(["Email", "Slack"]) }).parse(v))
+  .validator((v) => z.object({ deal_id: z.string().max(50), partner_id: z.string().max(100), partner_name: z.string().max(200), channel: z.enum(["Email", "Slack"]) }).parse(v))
   .handler(async ({ data }) => {
     const { teamDb } = await import("./team.server");
     const { db } = await teamDb();
@@ -55,7 +55,7 @@ export const logOutreach = createServerFn({ method: "POST" })
   });
 
 export const markReplied = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({ id: z.string().uuid() }).parse(v))
+  .validator((v) => z.object({ id: z.string().uuid() }).parse(v))
   .handler(async ({ data }) => {
     const { teamDb } = await import("./team.server");
     const { db } = await teamDb();
@@ -65,7 +65,7 @@ export const markReplied = createServerFn({ method: "POST" })
   });
 
 export const addFriction = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({ deal: z.string().max(300), category: z.string().max(100), notes: z.string().max(2000) }).parse(v))
+  .validator((v) => z.object({ deal: z.string().max(300), category: z.string().max(100), notes: z.string().max(2000) }).parse(v))
   .handler(async ({ data }) => {
     const { teamDb } = await import("./team.server");
     const { db } = await teamDb();
@@ -75,7 +75,7 @@ export const addFriction = createServerFn({ method: "POST" })
   });
 
 export const setFrictionStatus = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({ id: z.string().uuid(), status: z.enum(["New", "In Progress", "Resolved"]) }).parse(v))
+  .validator((v) => z.object({ id: z.string().uuid(), status: z.enum(["New", "In Progress", "Resolved"]) }).parse(v))
   .handler(async ({ data }) => {
     const { teamDb } = await import("./team.server");
     const { db } = await teamDb();

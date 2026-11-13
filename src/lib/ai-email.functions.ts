@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 export const draftIntroEmail = createServerFn({ method: "POST" })
-  .inputValidator((v) => z.object({
+  .validator((v) => z.object({
     partnerName: z.string().max(200), contactName: z.string().max(200), tier: z.string().max(50), type: z.string().max(100),
     winRate: z.number(), closedWon: z.number(), certifications: z.number(), country: z.string().max(100),
     account: z.string().max(200), dealCountry: z.string().max(100), product: z.string().max(200), amount: z.number(), stage: z.string().max(100),
