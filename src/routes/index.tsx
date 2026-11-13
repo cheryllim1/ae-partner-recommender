@@ -80,15 +80,17 @@ function Index() {
           {ws.isLoading && <span className="ml-2 flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" />Loading saved work…</span>}
           {ws.isError && <span className="ml-2 font-semibold text-destructive">Saved work couldn't load — changes won't be saved.</span>}
         </div>
-        <div className="grid gap-6 lg:grid-cols-[45fr_55fr]">
-          <div className="space-y-4">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+          <div className="min-w-0 space-y-4">
             <OpportunityPanel presetId={presetId} presets={PRESETS} onPreset={setPresetId} opp={opp}
               onChange={(o) => setEdits((e) => ({ ...e, [presetId]: o }))} status={status}
               partner={assignedPartner} onChangePartner={focusCoPilot} onClearPartner={clear} />
+            <div id="copilot"><CoPilot opp={opp} boosts={boosts} assignedId={deal.assigned_partner_id ?? undefined} onAssign={assign} onEmail={onEmail} onSlack={onSlack} /></div>
+          </div>
+          <aside className="min-w-0 space-y-4">
             <FollowUps items={dealOutreach} onReplied={ws.markReplied} />
             <DealOutcome key={`${presetId}-${deal.outcome}`} outcome={deal.outcome} note={deal.outcome_note} partnerName={assignedPartner?.name} onSave={saveOutcome} />
-          </div>
-          <div id="copilot"><CoPilot opp={opp} boosts={boosts} assignedId={deal.assigned_partner_id ?? undefined} onAssign={assign} onEmail={onEmail} onSlack={onSlack} /></div>
+          </aside>
         </div>
         <SummaryDrawer dispatches={dispatches} activities={activities} friction={friction}
           onAddFriction={ws.addFriction} onFrictionStatus={(id, s) => ws.setFrictionStatus({ id, status: s })}
