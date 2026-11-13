@@ -31,4 +31,5 @@ use the editor.
 
 ## Project rules
 - Partner ranking/scoring lives in src/lib/partner-engine.ts (pure, tested); UI only consumes it so scoring rules stay in one place.
-- App is 100% client-side; data comes from bundled JSON in src/data/.
+- Partner/product/deal catalogs are bundled JSON in src/data/; team-shared state (deal status, assignments, outcomes, activity, outreach, blockers) lives in Lovable Cloud, read/written only via server fns in src/lib/team.functions.ts that act as the signed-in Lovable workspace user (identity token → RLS), so there is no app login.
+- AI email drafts run server-side in src/lib/ai-email.functions.ts via @lovable.dev/ai-gateway; keep prompts off the client.
