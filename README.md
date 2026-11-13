@@ -9,7 +9,7 @@ An embedded Salesforce Opportunity small-panel built to accelerate co-sell veloc
 ## 🎯 The Operational Problem:
 
 Getting direct sales teams to consistently attach partners is one of the highest-leverage drivers—and biggest bottlenecks—in enterprise channel growth. 
-**Eliminating Discovery Friction for AEs:** Instead of forcing reps to leave Salesforce to search spreadsheets or portals, the co-pilot dynamically evaluates [604 real OpenText partners](https://www.opentext.com/partners/partner-directory) against the active opportunity's territory, deal size, and OpenText product line (e.g., *Extended ECM, Cybersecurity, Analytics*).
+**Eliminating Discovery Friction for AEs:** Instead of forcing reps to leave Salesforce to search spreadsheets or portals, the co-pilot dynamically evaluates [604 real OpenText partners](https://www.opentext.com/partners/partner-directory) against the active opportunity's territory, deal size, and OpenText product line (e.g., *Extended ECM, Cybersecurity, Analytics*). <br>
 2. **Data-Backed Partner Matching:** Recommendations are weighted and ranked to surface the **Top 3 partners** using historical commercial metrics:
    * **Historical Win Rate** (`Closed Won / Total Opportunities`)
    * **OpenText Membership Tier** (*Platinum, Gold, Silver, Bronze*)
