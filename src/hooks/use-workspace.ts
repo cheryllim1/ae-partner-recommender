@@ -5,11 +5,16 @@ import { addFriction, loadWorkspace, logActivity, logOutreach, markReplied, save
 
 const KEY = ["workspace"];
 
-/** Saved team workspace: deal statuses, assignments, outcomes, activity, outreach and blockers. */
+/** Demo-mode starting point: everything works on screen even when the backend can't be reached. */
+const EMPTY: Workspace = { me: "AE", deals: [], activities: [], outreach: [], friction: [] };
+const tmpId = () => `local-${Math.random().toString(36).slice(2)}`;
+const now = () => new Date().toISOString();
+
+/** Saved team workspace: deal statuses, assignments, activity, outreach and blockers. */
 export function useWorkspace() {
   const qc = useQueryClient();
   const load = useServerFn(loadWorkspace);
-  const q = useQuery({ queryKey: KEY, queryFn: () => load(), staleTime: 30_000, retry: false });
+  const q = useQuery({ queryKey: KEY, queryFn: () => load(), staleTime: 30_000, retry: false, initialData: EMPTY });
   const fSave = useServerFn(saveDeal), fAct = useServerFn(logActivity), fOut = useServerFn(logOutreach);
   const fReplied = useServerFn(markReplied), fFr = useServerFn(addFriction), fFrS = useServerFn(setFrictionStatus);
   const patch = (fn: (w: Workspace) => Workspace) => qc.setQueryData<Workspace>(KEY, (w) => (w ? fn(w) : w));
@@ -28,12 +33,22 @@ export function useWorkspace() {
   });
   const activity = useMutation({
     mutationFn: (a: { deal_id: string; type: string; partner_name: string; description: string }) => fAct({ data: a }),
-    onSuccess: (row) => patch((w) => ({ ...w, activities: [row, ...w.activities] })),
+    onMutate: (a) => {
+      const id = tmpId();
+      patch((w) => ({ ...w, activities: [{ id, deal_id: a.deal_id, type: a.type, partner_name: a.partner_name, description: a.description, user_name: null, created_at: now() }, ...w.activities] }));
+      return { id };
+    },
+    onSuccess: (row, _a, ctx) => patch((w) => ({ ...w, activities: w.activities.map((x) => (x.id === ctx?.id ? row : x)) })),
     onError: fail,
   });
   const outreach = useMutation({
     mutationFn: (o: { deal_id: string; partner_id: string; partner_name: string; channel: "Email" | "Slack" }) => fOut({ data: o }),
-    onSuccess: (row) => patch((w) => ({ ...w, outreach: [row, ...w.outreach] })),
+    onMutate: (o) => {
+      const id = tmpId();
+      patch((w) => ({ ...w, outreach: [{ id, deal_id: o.deal_id, partner_id: o.partner_id, partner_name: o.partner_name, channel: o.channel, replied: false, sent_at: now() }, ...w.outreach] }));
+      return { id };
+    },
+    onSuccess: (row, _o, ctx) => patch((w) => ({ ...w, outreach: w.outreach.map((x) => (x.id === ctx?.id ? row : x)) })),
     onError: fail,
   });
   const replied = useMutation({
@@ -43,7 +58,12 @@ export function useWorkspace() {
   });
   const friction = useMutation({
     mutationFn: (f: { deal: string; category: string; notes: string }) => fFr({ data: f }),
-    onSuccess: (row) => patch((w) => ({ ...w, friction: [row, ...w.friction] })),
+    onMutate: (f) => {
+      const id = tmpId();
+      patch((w) => ({ ...w, friction: [{ id, deal: f.deal, category: f.category, notes: f.notes, status: "New", created_at: now() }, ...w.friction] }));
+      return { id };
+    },
+    onSuccess: (row, _f, ctx) => patch((w) => ({ ...w, friction: w.friction.map((x) => (x.id === ctx?.id ? row : x)) })),
     onError: fail,
   });
   const frictionStatus = useMutation({
