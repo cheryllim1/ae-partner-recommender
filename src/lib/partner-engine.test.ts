@@ -31,8 +31,8 @@ describe("win/loss learning", () => {
     expect(outcomeBoosts([{ partnerId: "a", outcome: "Won" }, { partnerId: "a", outcome: "Won" }, { partnerId: "b", outcome: "Lost" }])).toEqual({ a: 6, b: -3 });
   });
   it("caps the nudge at ±9", () => {
-    expect(outcomeBoosts(Array(5).fill({ partnerId: "a", outcome: "Won" })).a).toBe(9);
-    expect(outcomeBoosts(Array(5).fill({ partnerId: "a", outcome: "Lost" })).a).toBe(-9);
+    expect(outcomeBoosts(Array(5).fill({ partnerId: "a", outcome: "Won" }))["a"]).toBe(9);
+    expect(outcomeBoosts(Array(5).fill({ partnerId: "a", outcome: "Lost" }))["a"]).toBe(-9);
   });
   it("a heavily lost partner drops out of the top spot", () => {
     const opp = { account: "X", country: "Germany", product: "OpenText Extended ECM (xECM)", amount: 480000, stage: "Proposal & Negotiation" as const };

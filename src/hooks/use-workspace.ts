@@ -10,7 +10,7 @@ const KEY = ["workspace"];
 export function useWorkspace() {
   const qc = useQueryClient();
   const load = useServerFn(loadWorkspace);
-  const q = useQuery({ queryKey: KEY, queryFn: () => load(), staleTime: 30_000 });
+  const q = useQuery({ queryKey: KEY, queryFn: () => load(), staleTime: 30_000, retry: 1 });
   const fSave = useServerFn(saveDeal), fAct = useServerFn(logActivity), fOut = useServerFn(logOutreach);
   const fReplied = useServerFn(markReplied), fFr = useServerFn(addFriction), fFrS = useServerFn(setFrictionStatus);
   const patch = (fn: (w: Workspace) => Workspace) => qc.setQueryData<Workspace>(KEY, (w) => (w ? fn(w) : w));
