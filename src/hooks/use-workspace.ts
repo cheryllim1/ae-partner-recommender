@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
 import { PRESETS } from "@/components/copilot/data";
 import { addFriction, loadWorkspace, logActivity, logOutreach, markReplied, saveDeal, setFrictionStatus, type DealState, type Workspace } from "@/lib/team.functions";
 
@@ -10,11 +9,11 @@ const KEY = ["workspace"];
 export function useWorkspace() {
   const qc = useQueryClient();
   const load = useServerFn(loadWorkspace);
-  const q = useQuery({ queryKey: KEY, queryFn: () => load(), staleTime: 30_000, retry: 1 });
+  const q = useQuery({ queryKey: KEY, queryFn: () => load(), staleTime: 30_000, retry: false });
   const fSave = useServerFn(saveDeal), fAct = useServerFn(logActivity), fOut = useServerFn(logOutreach);
   const fReplied = useServerFn(markReplied), fFr = useServerFn(addFriction), fFrS = useServerFn(setFrictionStatus);
   const patch = (fn: (w: Workspace) => Workspace) => qc.setQueryData<Workspace>(KEY, (w) => (w ? fn(w) : w));
-  const fail = (e: unknown) => { console.error(e); toast.error("Couldn't save that change — please try again."); qc.invalidateQueries({ queryKey: KEY }); };
+  const fail = (e: unknown) => { console.warn("Demo mode: change not saved", e); };
 
   const dealState = (id: string): DealState => {
     const saved = q.data?.deals.find((d) => d.deal_id === id);

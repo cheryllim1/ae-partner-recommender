@@ -73,7 +73,6 @@ function Index() {
       <main className="mx-auto max-w-[1500px] px-4 py-6">
         <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground"><Cloud className="h-4 w-4 text-sky" />Opportunities › {opp.account}
           {ws.isLoading && <span className="ml-2 flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" />Loading saved work…</span>}
-          {ws.isError && <span className="ml-2 font-semibold text-destructive">Saved work couldn't load — changes won't be saved.</span>}
         </div>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
           <div className="min-w-0 space-y-4">
