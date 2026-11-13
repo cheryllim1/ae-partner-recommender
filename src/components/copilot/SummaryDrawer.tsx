@@ -5,8 +5,8 @@ import { ACTIVITIES, BLOCKER_CATEGORIES, type FrictionItem } from "./data";
 
 export type LiveActivity = { activityId: string; timestamp: string; type: string; partnerName: string; description: string; status: string };
 
-export function SummaryDrawer({ dispatches, activities, friction, setFriction, dealOptions }: {
-  dispatches: number; activities: LiveActivity[]; friction: FrictionItem[]; setFriction: (f: FrictionItem[]) => void; dealOptions: string[];
+export function SummaryDrawer({ dispatches, activities, friction, onAddFriction, onFrictionStatus, dealOptions }: {
+  dispatches: number; activities: LiveActivity[]; friction: FrictionItem[]; onAddFriction: (f: { deal: string; category: string; notes: string }) => void; onFrictionStatus: (id: string, s: FrictionItem["status"]) => void; dealOptions: string[];
 }) {
   const [open, setOpen] = useState(true);
   const [deal, setDeal] = useState(dealOptions[0] ?? ""); const [cat, setCat] = useState<string>(BLOCKER_CATEGORIES[0] ?? "Other"); const [notes, setNotes] = useState("");
@@ -16,7 +16,7 @@ export function SummaryDrawer({ dispatches, activities, friction, setFriction, d
   const field = "h-9 w-full rounded border border-input bg-card px-2 text-sm";
   const submit = (e: React.FormEvent) => {
     e.preventDefault(); if (!deal || !notes.trim()) return;
-    setFriction([{ id: `FR-${200 + friction.length}`, deal, category: cat, notes: notes.trim(), status: "New", date: new Date().toISOString().slice(0, 10) }, ...friction]);
+    onAddFriction({ deal, category: cat, notes: notes.trim() });
     setNotes("");
   };
   const stCls = { New: "bg-sky/15 text-sky", "In Progress": "bg-warning/20 text-foreground", Resolved: "bg-success/15 text-success" };
@@ -57,9 +57,9 @@ export function SummaryDrawer({ dispatches, activities, friction, setFriction, d
               <table className="w-full text-sm"><thead className="sticky top-0 bg-muted text-left text-xs uppercase text-muted-foreground"><tr><th className="px-3 py-2">Deal</th><th className="px-3 py-2">Blocker</th><th className="px-3 py-2">Status</th></tr></thead>
                 <tbody>{friction.filter((f) => filter === "All" || f.status === filter).map((f) => (
                   <tr key={f.id} className="border-t border-border align-top">
-                    <td className="px-3 py-2"><p className="font-semibold">{f.deal}</p><p className="text-[11px] text-muted-foreground">{f.id} · {f.date}</p></td>
+                    <td className="px-3 py-2"><p className="font-semibold">{f.deal}</p><p className="text-[11px] text-muted-foreground">{f.date}</p></td>
                     <td className="px-3 py-2"><p className="text-xs font-semibold">{f.category}</p><p className="text-xs text-muted-foreground">{f.notes}</p></td>
-                    <td className="px-3 py-2"><select aria-label={`Status for ${f.id}`} value={f.status} onChange={(e) => setFriction(friction.map((x) => x.id === f.id ? { ...x, status: e.target.value as FrictionItem["status"] } : x))}
+                    <td className="px-3 py-2"><select aria-label={`Status for ${f.id}`} value={f.status} onChange={(e) => onFrictionStatus(f.id, e.target.value as FrictionItem["status"])}
                       className={`rounded px-2 py-1 text-xs font-semibold ${stCls[f.status]}`}>{["New", "In Progress", "Resolved"].map((s) => <option key={s}>{s}</option>)}</select></td>
                   </tr>))}</tbody></table>
             </div>

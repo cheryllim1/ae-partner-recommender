@@ -1,8 +1,11 @@
 import { Fragment, useMemo, useState } from "react";
 import type React from "react";
-import { Check, CheckCircle2, UserCheck, Copy, Loader2, Mail, MapPin, Search, Zap, Award, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sparkles, PenLine, Check, CheckCircle2, UserCheck, Copy, Loader2, Mail, MapPin, Search, Zap, Award, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { type Partner, PARTNERS, buildIntroEmail, fmtMoney, rankPartners, scorePartner, type Opportunity, type Scored } from "@/lib/partner-engine";
+import { useServerFn } from "@tanstack/react-start";
+import { Link } from "@tanstack/react-router";
+import { draftIntroEmail } from "@/lib/ai-email.functions";
+import { type Partner, PARTNERS, STAGE_LOGIC, buildIntroEmail, fmtMoney, rankWithHistory, scorePartner, type Opportunity, type Scored } from "@/lib/partner-engine";
 
 const tierCls: Record<string, string> = {
   Platinum: "bg-navy text-navy-foreground", Gold: "bg-warning/20 text-foreground border border-warning/50",
@@ -23,16 +26,45 @@ function ConfirmAssign({ p, opp, onConfirm, onCancel }: { p: Partner; opp: Oppor
   );
 }
 
-function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confirm }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void; assigned: boolean; onSelect: () => void; confirm?: React.ReactNode }) {
+function EmailComposer({ s, opp, onCopied, onClose }: { s: Scored; opp: Opportunity; onCopied: () => void; onClose: () => void }) {
+  const p = s.partner;
+  const [text, setText] = useState(() => buildIntroEmail(s, opp));
+  const [tone, setTone] = useState<"Concise" | "Warm" | "Formal">("Concise");
+  const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const draft = useServerFn(draftIntroEmail);
+  const generate = async () => {
+    setBusy(true);
+    try {
+      const r = await draft({ data: { partnerName: p.name, contactName: p.partnerContact.name, tier: p.tier, type: p.type, winRate: p.winRate, closedWon: p.closedWon, certifications: p.certifications, country: p.country,
+        account: opp.account, dealCountry: opp.country, product: opp.product, amount: opp.amount, stage: opp.stage, motion: STAGE_LOGIC[opp.stage].motion, tone } });
+      if (r.text) { setText(r.text); toast.success("AI draft ready — review and edit before sending"); } else toast.error(r.error ?? "Couldn't write a draft");
+    } catch { toast.error("Couldn't write a draft — please try again."); } finally { setBusy(false); }
+  };
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked */ }
+    setCopied(true); onCopied(); toast.success(`Intro email for ${p.partnerContact.name} copied`); setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <div className="mt-3 rounded-lg border border-primary/40 bg-accent/40 p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <select aria-label="Tone" value={tone} onChange={(e) => setTone(e.target.value as typeof tone)} className="h-9 rounded border border-input bg-card px-2 text-sm">
+          {["Concise", "Warm", "Formal"].map((t) => <option key={t}>{t}</option>)}</select>
+        <button onClick={generate} disabled={busy} className="flex h-9 items-center gap-1.5 rounded bg-navy px-3 text-sm font-semibold text-navy-foreground disabled:opacity-70">
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}{busy ? "Writing…" : "Write with AI"}</button>
+        <button onClick={onClose} className="ml-auto text-xs font-semibold text-muted-foreground hover:text-foreground">Close</button>
+      </div>
+      <textarea aria-label="Intro email" value={text} onChange={(e) => setText(e.target.value)} rows={10} className="mt-2 w-full rounded border border-input bg-card p-2 text-sm leading-relaxed" />
+      <button onClick={copy} className="mt-2 flex h-10 w-full items-center justify-center gap-2 rounded border border-primary bg-card text-sm font-semibold text-primary hover:bg-accent">
+        {copied ? <><Check className="h-4 w-4" />Copied!</> : <><Copy className="h-4 w-4" />Copy Email & Log Outreach</>}</button>
+    </div>
+  );
+}
+
+function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confirm }: { s: Scored; rank: number; opp: Opportunity; onEmail: () => void; onSlack: () => void; assigned: boolean; onSelect: () => void; confirm?: React.ReactNode }) {
+  const [composing, setComposing] = useState(false);
   const [sending, setSending] = useState(false);
   const p = s.partner;
-  const copy = async () => {
-    const text = buildIntroEmail(s, opp);
-    try { await navigator.clipboard.writeText(text); } catch { /* clipboard blocked; still log */ }
-    setCopied(true); onEmail(); toast.success(`Intro email for ${p.partnerContact.name} copied`);
-    setTimeout(() => setCopied(false), 2000);
-  };
   const ping = () => {
     setSending(true);
     setTimeout(() => { setSending(false); onSlack(); toast.success("Dispatched to #pde-deal-reg & Partner Manager notified"); }, 400);
@@ -45,7 +77,7 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confi
         {s.matchKind !== "exact" && <span className="rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-semibold text-foreground border border-warning/40">Regional / EMEA Fallback Match</span>}
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        <h3 className="text-base font-bold">{p.name}</h3><TierBadge tier={p.tier} /><TypeBadge type={p.type} />
+        <Link to="/partners/$partnerId" params={{ partnerId: p.id }} className="text-base font-bold hover:underline">{p.name}</Link><TierBadge tier={p.tier} /><TypeBadge type={p.type} />
       </div>
       <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />{p.country}{p.region ? ` · ${p.region}` : ""}</p>
       <p className="mt-2 flex items-start gap-1.5 rounded bg-success/10 px-2 py-1.5 text-xs font-medium text-foreground"><Award className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" />{s.why}</p>
@@ -59,13 +91,14 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect, confi
         <span className="truncate text-muted-foreground">· {p.partnerContact.email}</span>
       </div>
       <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <button onClick={copy} className="flex h-11 items-center justify-center gap-2 rounded border border-primary text-sm font-semibold text-primary hover:bg-accent">
-          {copied ? <><Check className="h-4 w-4" />Copied!</> : <><Copy className="h-4 w-4" />Copy Intro Email</>}</button>
+        <button onClick={() => setComposing(!composing)} className="flex h-11 items-center justify-center gap-2 rounded border border-primary text-sm font-semibold text-primary hover:bg-accent">
+          <PenLine className="h-4 w-4" />{composing ? "Hide Email" : "Write Intro Email"}</button>
         <button onClick={ping} disabled={sending} className="flex h-11 items-center justify-center gap-2 rounded bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary-hover disabled:opacity-80">
           {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}{sending ? "Dispatching…" : "Ping PDE on Slack"}</button>
         <button onClick={onSelect} disabled={assigned} className="flex h-11 items-center justify-center gap-2 rounded border border-success bg-success/10 text-sm font-semibold text-foreground hover:bg-success/20 disabled:opacity-70 sm:col-span-2">
           <UserCheck className="h-4 w-4 text-success" />{assigned ? "Assigned to this deal" : "Select & Confirm Partner"}</button>
       </div>
+      {composing && <EmailComposer s={s} opp={opp} onCopied={onEmail} onClose={() => setComposing(false)} />}
       {confirm}
     </article>
   );
@@ -95,7 +128,7 @@ function Directory({ opp, assignedId, onSelect, renderConfirm }: { opp: Opportun
             <th className="px-3 py-2">Partner</th><th className="px-3 py-2">Country</th><th className="px-3 py-2">Tier / Program</th><th className="px-3 py-2 text-right">Win Rate</th><th className="px-3 py-2 text-right">Fit</th><th className="px-3 py-2" /></tr></thead>
           <tbody>{rows.slice(cur * 20, cur * 20 + 20).map((p) => { const c = renderConfirm(p); return (
             <Fragment key={p.id}><tr className="border-t border-border hover:bg-accent/50">
-              <td className="px-3 py-2"><p className="font-semibold">{p.name}</p><p className="text-xs text-muted-foreground">{p.partnerContact.name} · {p.certifications} certs</p></td>
+              <td className="px-3 py-2"><Link to="/partners/$partnerId" params={{ partnerId: p.id }} className="font-semibold hover:underline">{p.name}</Link><p className="text-xs text-muted-foreground">{p.partnerContact.name} · {p.certifications} certs</p></td>
               <td className="px-3 py-2 text-xs">{p.country}</td>
               <td className="px-3 py-2"><div className="flex flex-wrap gap-1"><TierBadge tier={p.tier} /><TypeBadge type={p.type} /></div></td>
               <td className="px-3 py-2 text-right font-semibold">{p.winRate}%</td>
@@ -119,10 +152,10 @@ function Directory({ opp, assignedId, onSelect, renderConfirm }: { opp: Opportun
   );
 }
 
-export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign }: { opp: Opportunity; onEmail: (s: Scored) => void; onSlack: (s: Scored) => void; assignedId?: string | undefined; onAssign: (p: Partner) => void }) {
+export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign, boosts }: { boosts: Record<string, number>; opp: Opportunity; onEmail: (s: Scored) => void; onSlack: (s: Scored) => void; assignedId?: string | undefined; onAssign: (p: Partner) => void }) {
   const [view, setView] = useState<"top" | "all">("top");
   const [pending, setPending] = useState<Partner | null>(null);
-  const top = useMemo(() => rankPartners(opp), [opp]);
+  const top = useMemo(() => rankWithHistory(opp, boosts), [opp, boosts]);
   const renderConfirm = (p: Partner) => pending?.id === p.id ? <ConfirmAssign p={p} opp={opp} onConfirm={() => { onAssign(p); setPending(null); }} onCancel={() => setPending(null)} /> : null;
   return (
     <div className="rounded-xl border border-border bg-muted/40 p-4">
