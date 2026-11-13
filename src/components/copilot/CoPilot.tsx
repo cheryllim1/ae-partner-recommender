@@ -57,7 +57,7 @@ function PartnerCard({ s, rank, opp, onEmail, onSlack, assigned, onSelect }: { s
   );
 }
 
-function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId?: string; onSelect: (p: Partner) => void }) {
+function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId?: string | undefined; onSelect: (p: Partner) => void }) {
   const [q, setQ] = useState(""); const [country, setCountry] = useState(""); const [tier, setTier] = useState(""); const [type, setType] = useState(""); const [page, setPage] = useState(0);
   const countries = useMemo(() => Array.from(new Set(PARTNERS.map((p) => p.country))).sort(), []);
   const types = useMemo(() => Array.from(new Set(PARTNERS.map((p) => p.type))).sort(), []);
@@ -105,7 +105,7 @@ function Directory({ opp, assignedId, onSelect }: { opp: Opportunity; assignedId
   );
 }
 
-export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign }: { opp: Opportunity; onEmail: (s: Scored) => void; onSlack: (s: Scored) => void; assignedId?: string; onAssign: (p: Partner) => void }) {
+export function CoPilot({ opp, onEmail, onSlack, assignedId, onAssign }: { opp: Opportunity; onEmail: (s: Scored) => void; onSlack: (s: Scored) => void; assignedId?: string | undefined; onAssign: (p: Partner) => void }) {
   const [view, setView] = useState<"top" | "all">("top");
   const [pending, setPending] = useState<Partner | null>(null);
   const top = useMemo(() => rankPartners(opp), [opp]);

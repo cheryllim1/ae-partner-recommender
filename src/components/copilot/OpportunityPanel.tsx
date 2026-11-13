@@ -19,7 +19,7 @@ export function StatusBadge({ status }: { status: EngagementStatus }) {
 export function OpportunityPanel({ presetId, presets, onPreset, opp, onChange, status, partner, onChangePartner, onClearPartner }: {
   presetId: string; presets: Preset[]; onPreset: (id: string) => void;
   opp: Opportunity; onChange: (o: Opportunity) => void; status: EngagementStatus;
-  partner?: Partner; onChangePartner: () => void; onClearPartner: () => void;
+  partner?: Partner | undefined; onChangePartner: () => void; onClearPartner: () => void;
 }) {
   const logic = STAGE_LOGIC[opp.stage];
   const seg = segmentFor(opp.amount || 0);
