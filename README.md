@@ -25,8 +25,8 @@ Getting direct sales teams to consistently attach partners is one of the highest
 ## ✨ Key Features & Salesforce-Native UI
 
 ### 1. Intelligent Partner Recommendation Engine
-* Surfaces top-ranked partner matches categorized by official OpenText tier (**Platinum, Gold, Silver, Bronze**) and certification depth.
-* Generates pre-formatted, one-click outreach templates tailored to the specific deal stage and partner focus area.
+* Surfaces top-ranked partner matches categorized by official OpenText tier (**Platinum, Gold, Silver, Bronze**), certification depth, win rates and average deal size won.
+* Generates pre-formatted, one-click outreach templates tailored to the specific deal stage and partner focus area for email or Slack.
 
 ### 2. Live Engagement Status Badges
 * Tracks communication states directly on the opportunity card (e.g., `Not Contacted`, `Partner Engaged: Dispatched to Slack (Pending Reply)`, `Partner Engaged: Email Sent`) to eliminate duplicate outreach and internal friction.
