@@ -6,7 +6,7 @@ import { OpportunityPanel } from "@/components/copilot/OpportunityPanel";
 import { CoPilot } from "@/components/copilot/CoPilot";
 import { SummaryDrawer, type LiveActivity } from "@/components/copilot/SummaryDrawer";
 import { AppHeader } from "@/components/copilot/AppHeader";
-import { DealOutcome, FollowUps } from "@/components/copilot/DealExtras";
+import { FollowUps } from "@/components/copilot/DealExtras";
 import { PRESETS, type EngagementStatus, type FrictionItem } from "@/components/copilot/data";
 import { PARTNERS, outcomeBoosts, type Opportunity, type Partner, type Scored } from "@/lib/partner-engine";
 import { useWorkspace } from "@/hooks/use-workspace";
@@ -65,11 +65,6 @@ function Index() {
     setDeal({ assigned_partner_id: null, status: "Not Contacted", outcome: null, outcome_note: null });
     act("Partner Cleared", assignedPartner.name, `Partner assignment cleared for ${opp.account}.`);
   };
-  const saveOutcome = (o: "Won" | "Lost" | null, note: string) => {
-    if (!assignedPartner) return;
-    setDeal({ outcome: o, outcome_note: note || null });
-    if (o) { act(`Deal ${o}`, assignedPartner.name, `${opp.account} marked ${o} with ${assignedPartner.name}${note ? `: ${note}` : "."}`); toast.success(`${opp.account} logged as ${o}`); }
-  };
   const focusCoPilot = () => document.getElementById("copilot")?.scrollIntoView({ behavior: "smooth" });
 
   return (
@@ -89,7 +84,6 @@ function Index() {
           </div>
           <aside className="min-w-0 space-y-4">
             <FollowUps items={dealOutreach} onReplied={ws.markReplied} />
-            <DealOutcome key={`${presetId}-${deal.outcome}`} outcome={deal.outcome} note={deal.outcome_note} partnerName={assignedPartner?.name} onSave={saveOutcome} />
           </aside>
         </div>
         <SummaryDrawer dispatches={dispatches} activities={activities} friction={friction}
