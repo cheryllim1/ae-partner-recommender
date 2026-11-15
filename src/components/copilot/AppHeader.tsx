@@ -1,5 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Github, Linkedin } from "lucide-react";
+
+const LINKEDIN = "https://www.linkedin.com/in/cheryl-ai-tian-lim/";
+const GITHUB = "https://github.com/cheryllim1/ae-partner-recommender";
+const credit = "inline-flex items-center gap-1 rounded text-sky underline-offset-2 hover:underline hover:text-primary-hover";
 
 const nav = "rounded px-3 py-1.5 text-sm font-semibold opacity-80 hover:opacity-100";
 export function AppHeader() {
