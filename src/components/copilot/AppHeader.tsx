@@ -1,5 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Github, Linkedin } from "lucide-react";
+
+const LINKEDIN = "https://www.linkedin.com/in/cheryl-ai-tian-lim/";
+const GITHUB = "https://github.com/cheryllim1/ae-partner-recommender";
+const credit = "inline-flex items-center gap-1 rounded text-sky underline-offset-2 hover:underline hover:text-primary-hover";
 
 const nav = "rounded px-3 py-1.5 text-sm font-semibold opacity-80 hover:opacity-100";
 export function AppHeader() {
@@ -8,7 +12,16 @@ export function AppHeader() {
       <div className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-2 px-4 py-3">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded bg-primary font-bold">OT</div>
-          <div><p className="text-sm font-bold leading-tight">OpenText · Sales Cloud</p><p className="text-[11px] opacity-70">AE Partner Co-Pilot</p></div>
+          <div>
+            <p className="text-sm font-bold leading-tight">OpenText · Sales Cloud</p>
+            <p className="flex flex-wrap items-center gap-1.5 text-[11px] opacity-90">
+              Built by
+              <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className={credit}>Cheryl Lim</a>
+              <span aria-hidden className="opacity-40">·</span>
+              <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="Cheryl Lim on LinkedIn" className={credit}><Linkedin className="h-3.5 w-3.5" /></a>
+              <a href={GITHUB} target="_blank" rel="noopener noreferrer" aria-label="Cheryl Lim on GitHub" className={credit}><Github className="h-3.5 w-3.5" /></a>
+            </p>
+          </div>
         </div>
         <nav className="flex items-center gap-1">
           <Link to="/" className={nav} activeOptions={{ exact: true }} activeProps={{ className: "bg-primary opacity-100" }}>Workspace</Link>
