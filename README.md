@@ -41,7 +41,7 @@ An embedded Salesforce Extension/ Widget built to accelerate co-sell velocity an
 
 * **Frontend & UI:** Built and deployed on **Lovable** (React, TypeScript, Tailwind CSS)
 * **Data Pipeline & Enrichment:** **Python, Pandas, and Jupyter Notebook**
-  * Normalized and cleaned **604 real OpenText partner records** (`opentext_clean_partners.json`) and core product categories (`opentext_clean_products.json`).
+  * Downloaded and cleaned **604 real OpenText partner records** (`opentext_clean_partners.json`) and core product categories (`opentext_clean_products.json`) from OpenText Website.
   * Standardized membership hierarchies to OpenText's official 4-tier structure, migrating legacy `"Authorized"` labels to `"Bronze"`.
   * Generated mock opportunity states (`mock_deals.json`) to validate engagement status tracking and fallback routing.
 
