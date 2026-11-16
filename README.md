@@ -2,12 +2,12 @@
 
 **Live Demo:** [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
 
-An embedded Salesforce Extension/ Widget built to accelerate co-sell velocity and drive Account Executive (AE) partner adoption. Designed to emulate native enterprise CRM workflows, the tool recommends the **Top 3 best-fit OpenText ecosystem partners** directly within an active deal context, eliminating manual directory searches and enabling instant co-sell outreach.
+An embedded Salesforce Extension/ Add-ons built to accelerate co-sell velocity and drive Account Executive (AE) partner adoption. Designed to emulate native enterprise CRM workflows, the tool recommends the **Top 3 best-fit OpenText ecosystem partners** directly within an active deal context, eliminating manual directory searches and enabling instant co-sell outreach.
 
 
 ---
 
-## 🎯 The Operational Problem:
+## 🎯 The solution to the problem (The Operational Problem):
 
 `This is built for the Sales Reps and AEs` Getting direct sales teams to consistently attach partners is one of the highest-leverage drivers—and biggest bottlenecks. <br>
 1. **Eliminating Discovery Friction for AEs:** Instead of forcing reps to leave Salesforce to search spreadsheets or portals, the co-pilot dynamically evaluates [604 real OpenText partners](https://www.opentext.com/partners/partner-directory) against the active opportunity's territory, deal size, and OpenText product line (e.g., *Extended ECM, Cybersecurity, Analytics*). <br> 
@@ -23,7 +23,7 @@ An embedded Salesforce Extension/ Widget built to accelerate co-sell velocity an
 
 ---
 
-## ✨ Key Features & Salesforce-Native UI
+## ✨ How is this useful (Key Features & Salesforce-Native UI)
 
 ### 1. Intelligent Partner Recommendation Engine
 * Surfaces top-ranked partner matches categorised by OpenText tiers, certification depth, win rates and average deal size won.
@@ -37,7 +37,7 @@ An embedded Salesforce Extension/ Widget built to accelerate co-sell velocity an
 
 ---
 
-## 🛠️ Data Engineering & Tech Stack
+## 🛠️ The Boring Stuff (Data Engineering & Tech Stack)
 
 * **Frontend & UI:** Built and deployed on **Lovable** (React, TypeScript, Tailwind CSS)
 * **Data Pipeline & Enrichment:** **Python, Pandas, and Jupyter Notebook**
