@@ -17,7 +17,7 @@ This is built for the Sales Reps and AEs. Getting direct sales teams to consiste
    * **Average Deal Size Won** (ensuring segment fit across Mid-Market and Enterprise deals) <br>
 3. **Zero-Friction Co-Sell Execution & Channel Hygiene:**
    * **One-Click Outreach:** AEs can immediately engage their chosen partner via deal-contextualized email drafts or direct Slack pings.
-   * **Live Engagement Badges:** Displays real-time communication status (`Not Contacted`, `Dispatched to Slack`, `Email Sent`) to prevent duplicate outreach and channel conflict.
+   * **Live Engagement Badges:** Displays real-time communication status like a Jira Board to prevent duplicate outreach and channel conflict.
    * **Regional Coverage Fallbacks:** When an opportunity sits in a lower-density territory with fewer than three local matches, the system automatically triggers a **`Contact Regional Partner Manager`** fallback alert so deals never stall.
 
 
@@ -30,7 +30,7 @@ This is built for the Sales Reps and AEs. Getting direct sales teams to consiste
 * Generates pre-formatted, one-click outreach templates tailored to the specific deal stage and partner focus area for email or Slack.
 
 ### 2. Live Engagement Status Badges
-* Tracks communication states directly on the opportunity card (e.g., `Not Contacted`, `Partner Engaged: Dispatched to Slack (Pending Reply)`, `Partner Engaged: Email Sent`) to eliminate duplicate outreach and internal friction.
+* Tracks communication states directly on the opportunity card like a Jira Board to eliminate duplicate outreach and internal friction.
 
 ### 3. Transparent Regional Fallback Logic
 * Automatically identifies when an opportunity sits in an underserved region with fewer than three local matches, instantly triggering a visible fallback alert: **`Contact Regional Partner Manager`**.
