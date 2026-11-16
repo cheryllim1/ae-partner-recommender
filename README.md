@@ -43,7 +43,7 @@ An embedded Salesforce Extension/ Add-ons built to accelerate co-sell velocity a
 * **Data Pipeline & Enrichment:** **Python, Pandas, and Jupyter Notebook**
   * Downloaded and cleaned **604 real OpenText partner records** (`opentext_clean_partners.json`) and core product categories (`opentext_clean_products.json`) from OpenText Website.
   * Standardized membership hierarchies to OpenText's official 4-tier structure, migrating legacy `"Authorized"` labels to `"Bronze"`.
-  * Generated mock opportunity states (`mock_deals.json`) to validate engagement status tracking and fallback routing.
+  * Generated mock opportunity states (`mock_deals.json`) to validate engagement status tracking and fallback routing. In short, these are fake data.
 
 ---
 
