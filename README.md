@@ -9,7 +9,7 @@ An embedded Salesforce Extension/ Widget built to accelerate co-sell velocity an
 
 ## 🎯 The Operational Problem:
 
-<b/>This is built for AEs and Sales Reps. <b/> Getting direct sales teams to consistently attach partners is one of the highest-leverage drivers—and biggest bottlenecks—in enterprise channel growth. <br>
+Getting direct sales teams to consistently attach partners is one of the highest-leverage drivers—and biggest bottlenecks. This is built specifically for the Sales Reps and AEs.  <br>
 1. **Eliminating Discovery Friction for AEs:** Instead of forcing reps to leave Salesforce to search spreadsheets or portals, the co-pilot dynamically evaluates [604 real OpenText partners](https://www.opentext.com/partners/partner-directory) against the active opportunity's territory, deal size, and OpenText product line (e.g., *Extended ECM, Cybersecurity, Analytics*). <br> 
 2. **Data-Backed Partner Matching:** Recommendations are weighted and ranked to surface the **Top 3 partners** using historical commercial metrics:
    * **Historical Win Rate** (`Closed Won / Total Opportunities`)
