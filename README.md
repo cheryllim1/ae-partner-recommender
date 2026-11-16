@@ -1,10 +1,10 @@
-# OpenText AE Partner Co-Pilot (Salesforce Opportunity Extension)
+# OpenText AE Partner Recommender (Salesforce Opportunity Extension)
 
 **Live Demo:** [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
 
 An embedded Salesforce Extension/ Widget built to accelerate co-sell velocity and drive Account Executive (AE) partner adoption. Designed to emulate native enterprise CRM workflows, the co-pilot recommends the **Top 3 best-fit OpenText ecosystem partners** directly within an active deal context, eliminating manual directory searches and enabling instant co-sell outreach.
 
-**Who is this built for: AE and Sales Reps**
+*Who is this built for: AE and Sales Reps*
 ---
 
 ## 🎯 The Operational Problem:
