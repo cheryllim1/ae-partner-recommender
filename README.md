@@ -8,7 +8,7 @@ Driving partner-contributed pipeline often breaks down at the execution layer:
 * **Workflow Friction:** Sourcing partner alignment requires jumping across disparate directories, slowing down deal velocity.
 * **Internal Adoption:** If co-selling isn't frictionless inside the daily CRM workflow, AEs default to direct-only motions.
 
-# 💡 The Solution
+### 💡 The Solution
 The AE-Partner Recommender is built as an embedded Salesforce add-on that bridges the gap between sales execution and partner ecosystems. It automatically matches active deal criteria with qualified partners and shows key stakeholder contacts instantly within the CRM environment.
 
 ---
