@@ -10,7 +10,7 @@ Driving partner-contributed pipeline often breaks down at the execution layer:
 * **Internal Adoption:** If co-selling isn't frictionless inside the daily CRM workflow, AEs default to direct-only motions.
 
 ### 💡 The Solution
-The AE-Partner Recommender is built as an embedded Salesforce add-on that bridges the gap between sales execution and partner ecosystems. It automatically matches active deal criteria with qualified partners and shows key stakeholder contacts instantly within the CRM environment.
+Designed as an internal tool, the AE-Partner Recommender is built as an embedded Salesforce add-on that bridges the gap between sales execution and partner ecosystems. It automatically matches active deal criteria with qualified partners and shows key stakeholder contacts instantly within the CRM environment.
 
 ### 🚀 Key Capabilities
 * **Deal-Level Matching:** Instantly queries active sales criteria to recommend high-probability partner synergies.
