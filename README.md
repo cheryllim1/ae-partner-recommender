@@ -1,6 +1,7 @@
 ## OpenText AE Partner Recommender (Salesforce Opportunity Extension)
 
-Live Demo: [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
+Access Demo: [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
+
 ---
 ### 🎯 The Business Challenge
 Driving partner-contributed pipeline often breaks down at the execution layer:
