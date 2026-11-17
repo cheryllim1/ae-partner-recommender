@@ -1,9 +1,6 @@
 # OpenText AE Partner Recommender (Salesforce Opportunity Extension)
 
 **Live Demo:** [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
-
-An enterprise-grade Go-To-Market (GTM) enablement prototype designed to eliminate Account Executive (AE) friction in partner-led co-selling by surfacing ecosystem visibility directly inside the CRM.
-
 ---
 ## 🎯 The Business Challenge
 Driving partner-contributed pipeline often breaks down at the execution layer:
@@ -12,7 +9,8 @@ Driving partner-contributed pipeline often breaks down at the execution layer:
 * **Internal Adoption:** If co-selling isn't frictionless inside the daily CRM workflow, AEs default to direct-only motions.
 
 ## 💡 The Solution
-The **AE-Partner Recommender** is built as an embedded Salesforce add-on tool that bridges the gap between sales execution and partner ecosystems. It automatically matches active deal criteria with qualified partners and surfaces key stakeholder contacts instantly within the CRM environment.
+The AE-Partner Recommender is built as an embedded Salesforce add-on that bridges the gap between sales execution and partner ecosystems. It automatically matches active deal criteria with qualified partners and shows key stakeholder contacts instantly within the CRM environment.
+
 ---
 
 ## 🚀 Key Capabilities
