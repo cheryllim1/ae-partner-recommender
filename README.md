@@ -1,6 +1,6 @@
 ## OpenText AE Partner Recommender (Salesforce Opportunity Extension)
 
-Designed by [Cheryl Lim](https://www.linkedin.com/in/cheryl-ai-tian-lim/)
+Designed by [Cheryl Lim](https://www.linkedin.com/in/cheryl-ai-tian-lim/) <br>
 Access Demo: [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
 
 ---
@@ -28,6 +28,6 @@ Designed as an internal tool, the AE-Partner Recommender is built as an embedded
   * Generated mock opportunity states (`mock_deals.json`) to validate engagement status tracking and fallback routing. In short, these are fake data.
 
 ---
-Designed by [Cheryl Lim](https://www.linkedin.com/in/cheryl-ai-tian-lim/)
+Designed by [Cheryl Lim](https://www.linkedin.com/in/cheryl-ai-tian-lim/)<br>
 Access Demo: [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
 
