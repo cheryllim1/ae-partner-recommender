@@ -11,15 +11,13 @@ Driving partner-contributed pipeline often breaks down at the execution layer:
 ### 💡 The Solution
 The AE-Partner Recommender is built as an embedded Salesforce add-on that bridges the gap between sales execution and partner ecosystems. It automatically matches active deal criteria with qualified partners and shows key stakeholder contacts instantly within the CRM environment.
 
----
-
-## 🚀 Key Capabilities
+### 🚀 Key Capabilities
 * **Deal-Level Matching:** Instantly queries active sales criteria to recommend high-probability partner synergies.
 * **Internal Contact Routing:** Pulls up direct partner POCs and enablement resources to accelerate joint outreach.
 * **Workflow Reduction:** Keeps AEs inside their primary CRM workspace, drastically lowering the barrier to ecosystem engagement.
 ---
 
-## 🛠️ The Boring Stuff (Data Engineering & Tech Stack)
+### 🛠️ The Boring Stuff (Data Engineering & Tech Stack)
 
 * **Frontend & UI:** Built and deployed on **Lovable** (React, TypeScript, Tailwind CSS)
 * **Data Pipeline & Enrichment:** **Python, Pandas, and Jupyter Notebook**
