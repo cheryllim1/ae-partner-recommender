@@ -1,8 +1,8 @@
-# OpenText AE Partner Recommender (Salesforce Opportunity Extension)
+## OpenText AE Partner Recommender (Salesforce Opportunity Extension)
 
 **Live Demo:** [ae-partner-recommender.lovable.app](https://ae-partner-recommender.lovable.app/)
 ---
-## 🎯 The Business Challenge
+### 🎯 The Business Challenge
 Driving partner-contributed pipeline often breaks down at the execution layer:
 * **Visibility Gaps:** AEs frequently struggle to identify which ecosystem partners are the right fit for an active deal.
 * **Workflow Friction:** Sourcing partner alignment requires jumping across disparate directories, slowing down deal velocity.
